@@ -154,9 +154,9 @@ exports.remove = async (_id) => {
 
 }
 
-exports.comparePassword = async (familyUsername, password) => {
+exports.comparePassword = async (familyEmail, password) => {
     try {
-        let parent = await this.isExist({ familyUsername })
+        let parent = await this.isExist({ familyEmail })
         if (parent.success) {
             match = await bcrypt.compare(password, parent.record.familyPassword)
             if (match) {

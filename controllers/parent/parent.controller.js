@@ -17,8 +17,8 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        const { familyUsername, familyPassword } = req.body;
-        const result = await parent.comparePassword(familyUsername, familyPassword);
+        const { familyUsername, familyEmail, familyPassword } = req.body;
+        const result = await parent.comparePassword(familyEmail, familyPassword);
         if (result.success) {
             payload = {
                 _id: result.record._id, name: result.record.name, email: result.record.email,
