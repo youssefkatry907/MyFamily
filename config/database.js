@@ -1,13 +1,23 @@
 const mongoose = require("mongoose")
 
-// const uri = "mongodb://localhost:27017/myFamily"
-const connection = () => {
-    mongoose.connect(process.env.CONNECTION_STRING, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-        .then(() => console.log("Database connected successfully"))
-        .catch(err => console.log(err))
+
+const connection = async () => {
+    return mongoose.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
+        .then(() => {
+            console.log("Connected to MongoDB database successfully!");
+        }).catch((err) => {
+            console.log("MongoDB Error: ", err);
+        })
 }
 
-module.exports = { connection }
+module.exports = { 
+    connection,
+    mongoose,
+    connect: () => {
+        mongoose.Promise = Promise;
+        mongoose.connect(uri);
+    },
+    disconnect: done => {
+        mongoose.disconnect(done);
+    }
+};
