@@ -67,7 +67,7 @@ exports.create = async (form) => {
             await newParent.save();
             return {
                 success: true,
-                record: newParent,
+                // record: newParent,
                 code: 201
             };
         }
