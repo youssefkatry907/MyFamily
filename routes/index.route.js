@@ -6,7 +6,7 @@ app.get("/", (req, res) => {
     res.status(200).json({ success: true, message: "Welcome to VIP Server!", code: 200 })
 })
 
-app.use("/api/v1//parent", parentRoutes);
+app.use("/api/v1/parent", parentRoutes);
 
 
 
