@@ -55,12 +55,6 @@ module.exports = {
                 "string.pattern.base": "please enter a valid password A-Z, a-z, 1-9, special character"
             }),
 
-            familyEmail: joi.string().required().email({ minDomainSegments: 2, tlds: { allow: ['com'] } }).empty().required().messages({
-                "string.email": "please enter a valid email",
-                "any.required": "email must be entered",
-                "string.empty": "email cannot be empty"
-            }),
-
             helpersNo: joi.number().optional().messages({
                 "number.base": "please enter a valid number",
                 "any.required": "number must be entered",
@@ -85,11 +79,6 @@ module.exports = {
             image: joi.object().optional().messages({
                 "object.base": "please enter a valid image"
             }),
-
-            permissions: joi.object().optional().messages({
-                "object.base": "please enter a valid permissions"
-            })
-
 
         })
     },

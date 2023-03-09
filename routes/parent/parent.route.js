@@ -7,6 +7,6 @@ const validator = require('../../helpers/validation.helper')
 app.post("/register", validator(registerValidation), parentController.register);
 app.post("/login", validator(loginValidation), parentController.login); 
 app.post("/resetPassword", validator(resetPasswordValidation), parentController.resetPassword);
-app.delete("/logout", parentController.logout);
+app.put("/logout", parentController.logout);
 
 module.exports = app  
