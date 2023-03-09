@@ -30,16 +30,12 @@ module.exports = {
                 "string.pattern.base": "please enter a valid family password A-Z, a-z, 1-9, special character"
             }),
 
-            otherParentName: joi.string().optional().messages({
+            otherParentName: joi.string().empty('').optional().messages({
                 "string.base": "please enter a valid Parent name",
-                "any.required": "Parent name must be entered",
-                "string.empty": "Parent name cannot be empty"
             }),
 
-            otherParentEmail: joi.string().optional().email({ minDomainSegments: 2, tlds: { allow: ['com'] } }).empty().optional().messages({
+            otherParentEmail: joi.string().empty('').optional().email({ minDomainSegments: 2, tlds: { allow: ['com'] } }).messages({
                 "string.email": "please enter a valid email",
-                "any.required": "email must be entered",
-                "string.empty": "email cannot be empty"
             }),
 
             familyUsername: joi.string().required().messages({
@@ -55,10 +51,8 @@ module.exports = {
                 "string.pattern.base": "please enter a valid password A-Z, a-z, 1-9, special character"
             }),
 
-            familyEmail: joi.string().required().email({ minDomainSegments: 2, tlds: { allow: ['com'] } }).empty().required().messages({
+            familyEmail: joi.string().empty('').optional().email({ minDomainSegments: 2, tlds: { allow: ['com'] } }).messages({
                 "string.email": "please enter a valid email",
-                "any.required": "email must be entered",
-                "string.empty": "email cannot be empty"
             }),
 
             helpersNo: joi.number().optional().messages({
@@ -73,7 +67,7 @@ module.exports = {
                 "string.empty": "number cannot be empty"
             }),
 
-            helpers: joi.array().optional().messages({ 
+            helpers: joi.array().optional().messages({
                 "array.base": "please enter a valid helpers"
             }),
 
