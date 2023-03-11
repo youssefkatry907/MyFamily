@@ -13,15 +13,17 @@ let parentSchema = mongoose.Schema({
     familyPassword: { type: String, required: true },
     helpersNo: { type: Number },
     childrenNo: { type: Number },
-    helpers:{ type: [{
-        email: {type: String},
-        permissions: [{type: Number}]
-    }], },
+    helpers: {
+        type: [{
+            email: { type: String },
+            permissions: [{ type: Number }]
+        }],
+    },
     children: { type: Array },
 })
 
-parentSchema.pre("save", async function (next) { 
-    this.password = await bcrypt.hash(this.password, saltrounds); 
+parentSchema.pre("save", async function (next) {
+    this.password = await bcrypt.hash(this.password, saltrounds);
     next();
 })
 

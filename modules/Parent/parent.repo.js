@@ -1,5 +1,8 @@
 let Parent = require('./parent.model')
+let Child = require('../Child/child.model')
+let Helper = require('../Helper/helper.model')
 let bcrypt = require("bcrypt");
+
 
 // Path: modules\parent\parent.controller.js
 
@@ -59,33 +62,52 @@ exports.get = async (filter) => {
 }
 
 exports.create = async (form) => {
-    try {
-        const parent = await this.isExist({ email: form.email });
-        if (!parent.success) {
 
-            const newParent = new Parent(form);
-            await newParent.save();
-            return {
-                success: true,
-                record: newParent,
-                code: 201
-            };
+    const parent = await this.isExist({ email: form.email });
+    if (!parent.success) {
+        const newParent = new Parent(form);
+        await newParent.save();
+        let sz = newParent.children.length
+        if (sz) {
+            var child = new Child({
+                familyName: newParent.familyUsername, email: form.children[0],
+                familyPassword: newParent.familyPassword
+            });
         }
-        else {
-            return {
-                success: false,
-                error: "Parent already exists!",
-                code: 404
-            };
+        await child.save();
+        for (let i = 1; i < sz; i++) {
+            child.email = newParent.children[i];
+            await child.save();
         }
-    } catch (err) {
-        console.log(`err.message`, err.message);
+        let helperSz = newParent.helpers.length
+        if (helperSz) {
+            var helper = new Helper({
+                familyName: newParent.familyUsername, email: newParent.helpers[0].email,
+                permissions: newParent.helpers[0].permissions,
+                familyPassword: newParent.familyPassword
+            });
+        }
+
+        await helper.save();
+        for (let i = 1; i < helperSz; i++) {
+            helper.email = newParent.helpers[i].email;
+            helper.permissions = newParent.helpers[i].permissions;
+            await helper.save();
+        }
         return {
-            success: false,
-            code: 500,
-            error: "Unexpected Error!"
+            success: true,
+            record: newParent,
+            code: 201
         };
     }
+    else {
+        return {
+            success: false,
+            error: "Parent already exists!",
+            code: 404
+        };
+    }
+
 
 }
 

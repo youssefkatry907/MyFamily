@@ -4,21 +4,21 @@ let bcrypt = require("bcrypt");
 let saltrounds = 5;
 
 let helperSchema = mongoose.Schema({
-    familyName: { type: String, required: true, ref: parentModel.familyUsername },
-    email: { type: String, required: true, ref: parentModel.helpers.email },
-    familyPassword: { type: String, required: true, ref: parentModel.familyPassword },
+    familyName: { type: String, required: true, ref: 'parentModel.familyUsername' },
+    email: { type: String, required: true, ref: 'parentModel.helpers.email' },
+    familyPassword: { type: String, required: true, ref: 'parentModel.familyPassword' },
     image: { type: String, required: false },
     // call the helpers permissions from parent model
-    permissions: { type: Array, ref: parentModel.helpers.permissions }
+    permissions: { type: Array, ref: 'parentModel.helpers.permissions' }
 
 })
 
 helperSchema.pre("save", async function (next) {
-    this.password = await bcrypt.hash(this.password, saltrounds);
+    this.familyPassword = bcrypt.hash(this.familyPassword, saltrounds);
     next();
 })
 
-let helperModel = mongoose.model('childrens', helperSchema)
+let helperModel = mongoose.model('helpers', helperSchema)
 
 module.exports = helperModel
 

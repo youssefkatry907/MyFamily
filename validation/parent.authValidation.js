@@ -27,7 +27,7 @@ module.exports = {
                 "string.base": "please enter a valid password",
                 "any.required": "password must be entered",
                 "string.empty": "password cannot be empty",
-                "string.pattern.base": "please enter a valid family password A-Z, a-z, 1-9, special character"
+                "string.pattern.base": "please enter a password A-Z, a-z, 1-9, special character"
             }),
 
             otherParentName: joi.string().optional().messages({
