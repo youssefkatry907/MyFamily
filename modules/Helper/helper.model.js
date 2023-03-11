@@ -1,14 +1,16 @@
 let mongoose = require('mongoose')
+let parentModel = require('../Parent/parent.model')
 let bcrypt = require("bcrypt");
 let saltrounds = 5;
 
 let helperSchema = mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true, dropdups: true },
-    password: { type: String, required: true },
+    familyName: { type: String, required: true, ref: parentModel.familyUsername },
+    email: { type: String, required: true, ref: parentModel.helpers.email },
+    familyPassword: { type: String, required: true, ref: parentModel.familyPassword },
     image: { type: String, required: false },
-    imageUrl: { type: String, required: false },
-    // familyId
+    // call the helpers permissions from parent model
+    permissions: { type: Array, ref: parentModel.helpers.permissions }
+
 })
 
 helperSchema.pre("save", async function (next) {

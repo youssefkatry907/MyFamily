@@ -3,17 +3,19 @@ let mongoose = require('mongoose')
 let todoSchema = mongoose.Schema({
     toDoList: [
         {
+            // return the child record
             childId: {
                 type: mongoose.Types.ObjectId,
                 ref: 'childrens'
             },
-            tasks: {type: Object, required: true}
+            tasks: [
+                {
+                    task: { type: String },
+                    done: { type: Boolean, default: false }
+                }
+            ]
         }
     ],
-    parentId: {
-        type: mongoose.Types.ObjectId,
-        ref: 'parents'
-    }
 })
 
 let todoModel = mongoose.model('todos', todoSchema)

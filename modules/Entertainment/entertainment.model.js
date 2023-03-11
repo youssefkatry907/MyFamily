@@ -1,8 +1,14 @@
 let mongoose = require('mongoose')
 
 let entertainmentSchema = mongoose.Schema({
-    titles: { type: Array, required: true },
-
+    suggestions: [
+        {
+            suggestion: { type: String },
+            percentage: { type: Number }
+        }
+    ],
+ // 2, 3, 1, sum = 6
+ // 2/6 = 33.33, 3/6 = 50, 1/6 = 16.66
     parentId: {
         type: mongoose.Types.ObjectId,
         ref: 'parents'
