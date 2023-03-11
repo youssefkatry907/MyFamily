@@ -2,7 +2,7 @@ let Entertainment = require('./entertainment.model')
 
 exports.isExist = async (filter) => {
     try {
-        const entertainment = await entertainment.findOne(filter).lean();
+        const entertainment = await Entertainment.findOne(filter).lean();
         if (entertainment) {
             return {
                 success: true,
