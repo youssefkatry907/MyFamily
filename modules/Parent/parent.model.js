@@ -10,19 +10,20 @@ let parentSchema = mongoose.Schema({
     otherParentName: { type: String, required: false },
     otherParentEmail: { type: String, required: false, unique: true, dropDups: true },
     familyUsername: { type: String, required: true },
-    familyEmail: { type: String, required: false, unique: false },
     familyPassword: { type: String, required: true },
     helpersNo: { type: Number },
     childrenNo: { type: Number },
-    helpers:{ type: [{
-        email: {type: String},
-        permissions: [{type: Number}]
-    }], },
+    helpers: {
+        type: [{
+            email: { type: String },
+            permissions: [{ type: Number }]
+        }],
+    },
     children: { type: Array },
 })
 
-parentSchema.pre("save", async function (next) { 
-    this.password = await bcrypt.hash(this.password, saltrounds); 
+parentSchema.pre("save", async function (next) {
+    this.password = await bcrypt.hash(this.password, saltrounds);
     next();
 })
 

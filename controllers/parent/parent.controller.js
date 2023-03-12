@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
     }
 }
 
-exports.resetPassword = async (req, res) => { 
+exports.resetPassword = async (req, res) => {
     try {
         const result = await parent.resetPassword(req.body.email, req.body.newPassword);
         res.status(result.code).json(result);
@@ -57,7 +57,7 @@ exports.resetPassword = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-        const result = await parent.remove(req.body._id);
+        const result = await parent.logout(req.body._id);
         res.status(result.code).json(result);
     } catch (err) {
         console.log(`err.message`, err.message);

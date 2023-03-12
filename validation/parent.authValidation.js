@@ -27,15 +27,19 @@ module.exports = {
                 "string.base": "please enter a valid password",
                 "any.required": "password must be entered",
                 "string.empty": "password cannot be empty",
-                "string.pattern.base": "please enter a valid family password A-Z, a-z, 1-9, special character"
+                "string.pattern.base": "please enter a password A-Z, a-z, 1-9, special character"
             }),
 
-            otherParentName: joi.string().empty('').optional().messages({
+            otherParentName: joi.string().optional().messages({
                 "string.base": "please enter a valid Parent name",
+                "any.required": "Parent name must be entered",
+                "string.empty": "Parent name cannot be empty"
             }),
 
-            otherParentEmail: joi.string().empty('').optional().email({ minDomainSegments: 2, tlds: { allow: ['com'] } }).messages({
+            otherParentEmail: joi.string().optional().email({ minDomainSegments: 2, tlds: { allow: ['com'] } }).empty().optional().messages({
                 "string.email": "please enter a valid email",
+                "any.required": "email must be entered",
+                "string.empty": "email cannot be empty"
             }),
 
             familyUsername: joi.string().required().messages({
@@ -51,10 +55,6 @@ module.exports = {
                 "string.pattern.base": "please enter a valid password A-Z, a-z, 1-9, special character"
             }),
 
-            familyEmail: joi.string().empty('').optional().email({ minDomainSegments: 2, tlds: { allow: ['com'] } }).messages({
-                "string.email": "please enter a valid email",
-            }),
-
             helpersNo: joi.number().optional().messages({
                 "number.base": "please enter a valid number",
                 "any.required": "number must be entered",
@@ -67,7 +67,7 @@ module.exports = {
                 "string.empty": "number cannot be empty"
             }),
 
-            helpers: joi.array().optional().messages({
+            helpers: joi.array().optional().messages({ 
                 "array.base": "please enter a valid helpers"
             }),
 
@@ -79,11 +79,6 @@ module.exports = {
             image: joi.object().optional().messages({
                 "object.base": "please enter a valid image"
             }),
-
-            permissions: joi.object().optional().messages({
-                "object.base": "please enter a valid permissions"
-            })
-
 
         })
     },
