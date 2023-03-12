@@ -1,46 +1,11 @@
 let Todo = require('./todo.model')
 
 
-/*
-// exports.IsTaskExist = async (arrayOfTasks, task, childId) => {
-//     try {
-//         let tasks = [];
-//         for (let i = 0; i < arrayOfTasks.length; i++) {
-//             if (arrayOfTasks[i].childId == childId) {
-//                 tasks = arrayOfTasks[i].tasks;
-//                 for (let j = 0; j < tasks.length; j++) {
-//                     if (tasks[j].taskName == task.taskName) {
-//                         return {
-//                             success: true,
-//                             code: 200
-//                         };
-//                     }
-//                 }
-//             }
-//         }
-//         return {
-//             success: true,
-//             record: tasks,
-//             code: 200
-//         };
-//     } catch (err) {
-//         return {
-//             success: false,
-//             code: 500,
-//             error: "Unexpected Error!"
-//         };
-//     }
-// }
-*/
-
-const mongoose = require('mongoose');
-
-
 exports.isExist = async (filter) => {
     try {
         console.log('filtrate', filter);
 
-        const child = await Todo.findOne({ toDoList: { $elemMatch: { childId: filter.childId } } }).lean();
+        const child = await Todo.findOne(filter).lean();
         console.log('child', child);
         if (child) {
             return {
@@ -58,6 +23,7 @@ exports.isExist = async (filter) => {
         }
 
     } catch (err) {
+        console.log(err.message);
         return {
             success: false,
             code: 500,
