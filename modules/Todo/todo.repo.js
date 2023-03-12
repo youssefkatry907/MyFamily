@@ -37,7 +37,7 @@ exports.isExist = async (filter) => {
 exports.add = async (form) => {
     try {
         console.log('form', form);
-        let todo = await this.isExist({ "toDoList.childId": form.childId });
+        let todo = await this.isExist({ "toDoList.child": form.child });
         console.log('filter', todo);
         if (todo.code == 500) return {
             success: false,
@@ -48,20 +48,20 @@ exports.add = async (form) => {
             console.log(todo.record);
             let newTodo = todo.record.toDoList;
             for (let i = 0; i < newTodo.length; i++) {
-                if (newTodo[i].childId == form.childId) {
+                if (newTodo[i].child == form.child) {
                     newTodo[i].tasks = newTodo[i].tasks.concat(form.tasks);
                 }
             }
             console.log(`add todo`, newTodo);
-            await Todo.updateOne({ "toDoList.childId": form.childId }, { $set: { "toDoList": newTodo } });
+            await Todo.updateOne({ "toDoList.child": form.child }, { $set: { "toDoList": newTodo } });
             return {
                 success: true,
                 code: 200
             };
         } else {
-            // push new childId and tasks into toDoList
+            // push new child and tasks into toDoList
             let newTodo = {
-                childId: form.childId, // Convert string to ObjectId
+                child: form.child, // Convert string to ObjectId
                 tasks: form.tasks.map(tsk => {
                     return { task: tsk.task, done: tsk.done ?? false }
                 })

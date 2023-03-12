@@ -9,7 +9,11 @@
     "mongoose": "^7.0.0",
     "nodemon": "^2.0.21"
   },
+
   "scripts": {
-    "start": "nodemon config/server.js"
+    "start": "node config/server.js",
+    "build": "node config/app.js"
   }
+
+  
 }

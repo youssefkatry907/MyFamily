@@ -3,7 +3,7 @@ const Todo = require('../../modules/Todo/todo.model');
 
 exports.getTasks = async (req, res) => {
   try {
-    const tasks = await Todo.find();
+    const tasks = await Todo.find().populate('toDoList.child');
     console.log(tasks);
     res.status(200).json(
 {      toDoList: tasks[0].toDoList,
