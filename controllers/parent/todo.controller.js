@@ -1,21 +1,41 @@
 const todoRepo = require('../../modules/Todo/todo.repo')
 
-exports.addTask = async (form) => {
+exports.addTask = async (req, res) => {
     try {
-        let todo = await todoRepo.add(form);
-        if (todo) {
-            // console.log(`newTodo555555555555`, todo);
-            return {
+        let todo = await todoRepo.add(req.body);
+        if (todo.code == 200) {
+            res.status(200).json({
                 success: true,
-                record: todo,
-                code: 200
-            };
+                message: "Task Added successfully"
+            });
+        } else{
+            res.status(todo.code).json({
+                success: todo.success,
+                message: todo.error
+            });
         }
     } catch (err) {
-        return {
+        res.status(500).json({
             success: false,
-            code: 500,
+            message: "Unexpected Error!"
+        });
+    }
+}
+
+exports.getTasks = async (req, res) => {
+    // return all tasks and populate all children
+    try {
+        let todo = await todoRepo.getAll();
+        if (todo) {
+            return res.status(200).json({
+                success: true,
+                record: todo.record
+            });
+        }
+    } catch (err) {
+       return res.status(500).json({
+            success: false,
             error: "Unexpected Error!"
-        };
+        });
     }
 }

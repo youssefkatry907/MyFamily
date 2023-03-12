@@ -1,37 +1,25 @@
 let Todo = require('./todo.model')
 
 
-/*
-// exports.IsTaskExist = async (arrayOfTasks, task, childId) => {
-//     try {
-//         let tasks = [];
-//         for (let i = 0; i < arrayOfTasks.length; i++) {
-//             if (arrayOfTasks[i].childId == childId) {
-//                 tasks = arrayOfTasks[i].tasks;
-//                 for (let j = 0; j < tasks.length; j++) {
-//                     if (tasks[j].taskName == task.taskName) {
-//                         return {
-//                             success: true,
-//                             code: 200
-//                         };
-//                     }
-//                 }
-//             }
-//         }
-//         return {
-//             success: true,
-//             record: tasks,
-//             code: 200
-//         };
-//     } catch (err) {
-//         return {
-//             success: false,
-//             code: 500,
-//             error: "Unexpected Error!"
-//         };
-//     }
-// }
-*/
+exports.getAll = async () => {
+    try {
+        // return all tasks and populate all children
+        const todo = await Todo.find().populate('toDoList.child').lean();
+        if (todo) {
+            return {
+                success: true,
+                record: todo,
+                code: 200
+            };
+        }
+    } catch (err) {
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
+}
 
 
 exports.isExist = async (filter) => {
@@ -66,40 +54,45 @@ exports.isExist = async (filter) => {
 
 exports.add = async (form) => {
     try {
-
-        let todo = await this.isExist({ "toDoList.childId": form.childId });
-        console.log(`todo`, todo);
+        // console.log('form', form);
+        let todo = await this.isExist({ "toDoList.child": form.child });
+        console.log('filter', todo);
+        if (todo.code == 500) return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
         if (todo.success) {
+            console.log(todo.record);
             let newTodo = todo.record.toDoList;
-            // console.log(`newTodo`, newTodo);
             for (let i = 0; i < newTodo.length; i++) {
-                if (newTodo[i].childId == form.childId) {
-                    newTodo[i].tasks.push(form.tasks);
+                if (newTodo[i].child == form.child) {
+                    newTodo[i].tasks = newTodo[i].tasks.concat(form.tasks);
                 }
             }
-            // console.log(`newTodo`, newTodo);
-            await Todo.updateOne({ "toDoList.childId": form.childId }, { $set: { "toDoList": newTodo } });
+            await Todo.updateOne({ "toDoList.child": form.child }, { $set: { "toDoList": newTodo } });
             return {
                 success: true,
                 code: 200
             };
-        }
-        else {
-            // push new childId and tasks into toDoList
+        } else {
+            // push new child and tasks into toDoList
             let newTodo = {
-                childId: form.childId,
-                tasks: form.tasks
+                child: form.child, // Convert string to ObjectId
+                tasks: form.tasks.map(tsk => {
+                    return { task: tsk.task, done: tsk.done ?? false }
+                })
             }
-            // console.log(`newTodo`, newTodo);
-            await Todo.updateOne({ "toDoList.childId": form.childId }, { $push: { "toDoList": newTodo } });
+            console.log(newTodo, newTodo);
+            let result = await Todo.updateOne({}, { $push: { "toDoList": newTodo } }, { upsert: true, new: true });
+            console.log(newTodo, newTodo);
             return {
                 success: true,
                 code: 200
             };
-
         }
     } catch (err) {
-        console.log(`err.message`, err.message);
+        console.log(err.message, err.message);
         return {
             success: false,
             code: 500,

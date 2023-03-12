@@ -3,8 +3,7 @@ let mongoose = require('mongoose')
 let todoSchema = mongoose.Schema({
     toDoList: [
         {
-            // return the child record
-            childId: {
+            child: {
                 type: mongoose.Types.ObjectId,
                 ref: 'childrens'
             },
