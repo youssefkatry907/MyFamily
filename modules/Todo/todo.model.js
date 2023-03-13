@@ -7,6 +7,7 @@ let todoSchema = mongoose.Schema({
                 type: mongoose.Types.ObjectId,
                 ref: 'childrens'
             },
+            date: { type: Date, default: Date.now },
             tasks: [
                 {
                     task: { type: String },

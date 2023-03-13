@@ -12,7 +12,7 @@ let studySchema = mongoose.Schema({
                             Assignment: {
                                 title: { type: String },
                                 description: { type: String },
-                                dueDate: { type: Date },
+                                dueDate: { type: Date, default: Date.now },
                                 done: { type: Boolean, default: false },
                                 image: { type: String }
                             }
