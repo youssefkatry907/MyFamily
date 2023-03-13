@@ -27,10 +27,7 @@ exports.getTasks = async (req, res) => {
     try {
         let todo = await todoRepo.getAll();
         if (todo) {
-            return res.status(200).json({
-                success: true,
-                record: todo.record
-            });
+            return res.status(200).json( {toDoList: todo.record[0].toDoList});
         }
     } catch (err) {
        return res.status(500).json({

@@ -1,6 +1,7 @@
 let mongoose = require('mongoose')
 
 let entertainmentSchema = mongoose.Schema({
+    title: { type: String },
     suggestions: [
         {
             suggestion: { type: String },

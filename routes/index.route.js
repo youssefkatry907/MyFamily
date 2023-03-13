@@ -3,6 +3,8 @@ let app = require("express").Router();
 let parentRoutes = require("./parent/parent.route");
 let entertainmentRoutes = require("./entertainment/entertainment.route");
 let todoRoutes = require("./todo/todo.route");
+let childRoutes = require("./child/child.route");
+let studyRoutes = require("./study/study.route");
 
 app.get("/", (req, res) => {
     res.status(200).json({ success: true, message: "Welcome to myFamily Server!", code: 200 })
@@ -11,6 +13,8 @@ app.get("/", (req, res) => {
 app.use("/api/v1/parent", parentRoutes);
 app.use("/api/v1/entertainment", entertainmentRoutes);
 app.use("/api/v1/todo", todoRoutes);
+app.use("/api/v1/child", childRoutes);
+app.use("/api/v1/study", studyRoutes);
 
 
 
