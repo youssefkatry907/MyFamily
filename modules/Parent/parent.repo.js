@@ -34,13 +34,15 @@ exports.isExist = async (filter) => {
 
 }
 
-exports.get = async (filter) => {
+exports.get = async (_id) => {
     try {
-        if (filter) {
-            record = await Parent.find(filter).lean().select("-password");
+        // get children of a parent
+        const parent = await Parent.findOne({_id}).lean();
+        // console.log(parent);
+        if (parent) {
             return {
                 success: true,
-                record,
+                record: parent,
                 code: 200
             };
         }
@@ -48,10 +50,11 @@ exports.get = async (filter) => {
             return {
                 success: false,
                 code: 404,
-                error: "Parent name is required!"
-            }
+                error: "Parent is not found!"
+            };
         }
     } catch (err) {
+        console.log(`err.message`, err.message);
         return {
             success: false,
             code: 500,

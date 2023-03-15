@@ -1,10 +1,10 @@
 let Calendar = require('./calendar.model')
 
-exports.addEvent = async (form) => {
+exports.add = async (form) => {
     let event = new Calendar(form)
     return await event.save()
 }
 
-exports.getEvents = async () => {
+exports.get = async () => {
     return await Calendar.find()
 }

@@ -20,3 +20,22 @@ exports.addSubject = async (req, res) => {
     }
 }
 
+exports.getStudies = async (req, res) => {
+    try {
+        let childId = req.body.childId;
+        let result = await study.get(childId);
+        return res.status(200).json({
+            success: true,
+            study: result,
+            code: 200,
+        });
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        });
+    }
+}
+

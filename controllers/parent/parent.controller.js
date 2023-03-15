@@ -68,3 +68,34 @@ exports.logout = async (req, res) => {
         });
     }
 }
+
+exports.getChildren = async (req, res) => {
+    // get children of a parent
+    try {
+        const result = await parent.get(req.body._id);
+        // console.log(`record`, record)
+        res.status(result.code).json(result.record.children);
+    } catch (err) {
+        console.log(`err.message`, err.message);
+        res.status(500).json({
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        });
+    }
+}
+
+exports.getHelpers = async (req, res) => {
+    // get children of a parent
+    try {
+        const record = await parent.get(req.body._id);
+        res.status(record.code).json(record);
+    } catch (err) {
+        console.log(`err.message`, err.message);
+        res.status(500).json({
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        });
+    }
+}
