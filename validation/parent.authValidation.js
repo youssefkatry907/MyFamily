@@ -67,7 +67,7 @@ module.exports = {
                 "string.empty": "number cannot be empty"
             }),
 
-            helpers: joi.array().optional().messages({ 
+            helpers: joi.array().optional().messages({
                 "array.base": "please enter a valid helpers"
             }),
 
@@ -79,7 +79,11 @@ module.exports = {
             image: joi.object().optional().messages({
                 "object.base": "please enter a valid image"
             }),
-
+            role: joi.string().optional().messages({
+                "string.base": "please enter a valid role",
+                "any.required": "role must be entered",
+                "string.empty": "role cannot be empty"
+            }),
         })
     },
 
@@ -98,7 +102,6 @@ module.exports = {
                 "string.empty": "email cannot be empty"
             }),
 
-
             familyPassword: joi.string().empty().required().pattern(new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/))
                 .messages({
                     "string.base": "please enter a valid password",
@@ -108,6 +111,7 @@ module.exports = {
                 })
         })
     },
+
 
 
     resetPasswordValidation: {

@@ -6,6 +6,7 @@ let todoRoutes = require("./todo/todo.route");
 let childRoutes = require("./child/child.route");
 let studyRoutes = require("./study/study.route");
 let calendarRoutes = require("./calendar/calendar.route");
+let helperRoutes = require("./helper/helper.route");
 
 app.get("/", (req, res) => {
     res.status(200).json({ success: true, message: "Welcome to myFamily Server!", code: 200 })
@@ -17,6 +18,7 @@ app.use("/api/v1/todo", todoRoutes);
 app.use("/api/v1/child", childRoutes);
 app.use("/api/v1/study", studyRoutes);
 app.use("/api/v1/calendar", calendarRoutes);
+app.use("/api/v1/helper", helperRoutes);
 
 
 

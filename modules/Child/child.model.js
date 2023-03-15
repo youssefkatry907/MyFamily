@@ -2,8 +2,9 @@ let mongoose = require('mongoose')
 let bcrypt = require("bcrypt");
 let saltrounds = 5;
 let parentModel = require('../Parent/parent.model')
- 
+
 let childSchema = mongoose.Schema({
+    parent: { type: mongoose.Types.ObjectId, ref: 'parents' },
     familyName: { type: String, required: true, ref: 'parentModel.familyUsername' },
     email: { type: String, required: true, ref: 'parentModel.children' },
     familyPassword: { type: String, required: true, ref: 'parentModel.familyPassword' },

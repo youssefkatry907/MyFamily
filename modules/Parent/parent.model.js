@@ -20,6 +20,7 @@ let parentSchema = mongoose.Schema({
         }],
     },
     children: { type: Array },
+    role: { type: String, default: "parent" },
 })
 
 parentSchema.pre("save", async function (next) {
