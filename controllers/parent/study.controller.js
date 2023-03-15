@@ -1,16 +1,10 @@
-let study = require('../../modules/Study/study.repo')
+let Study = require('../../modules/Study/study.repo')
 
 exports.addSubject = async (req, res) => {
     try {
         let form = req.body;
-        let result = await study.addSubject(form);
-        result.study.push(form)
-        await result.save()
-        return res.status(200).json({
-            success: true,
-            result,
-            code: 200,
-        });
+        let study = await Study.addSubject(form);
+        return res.status(200).json(study);
     } catch (err) {
         return res.status(500).json({
             success: false,
@@ -22,13 +16,8 @@ exports.addSubject = async (req, res) => {
 
 exports.getStudies = async (req, res) => {
     try {
-        let childId = req.body.childId;
-        let result = await study.get(childId);
-        return res.status(200).json({
-            success: true,
-            study: result,
-            code: 200,
-        });
+        let study = await Study.get();
+        return res.status(200).json(study);
     } catch (err) {
         console.log(err.message);
         return res.status(500).json({
