@@ -34,35 +34,35 @@ exports.isExist = async (filter) => {
 
 }
 
-exports.get = async (_id) => {
-    try {
-        // get children of a parent
-        const parent = await Parent.findOne({_id}).lean();
-        // console.log(parent);
-        if (parent) {
-            return {
-                success: true,
-                record: parent,
-                code: 200
-            };
-        }
-        else {
-            return {
-                success: false,
-                code: 404,
-                error: "Parent is not found!"
-            };
-        }
-    } catch (err) {
-        console.log(`err.message`, err.message);
-        return {
-            success: false,
-            code: 500,
-            error: "Unexpected Error!"
-        };
-    }
+// exports.get = async (_id) => {
+//     try {
+//         // get the children of a parent by the parent's token
+//         let parent = await this.isExist(_id);
+//         console.log('parent', parent);
+//         if (parent.success) {
+//             return {
+//                 success: true,
+//                 record: parent.record,
+//                 code: 200
+//             }
+//         }
+//         else {
+//             return {
+//                 success: false,
+//                 error: "Parent is not found!",
+//                 code: 404
+//             };
+//         }
+//     } catch (err) {
+//         console.log(`err.message`, err.message);
+//         return {
+//             success: false,
+//             code: 500,
+//             error: "Unexpected Error!"
+//         };
+//     }
 
-}
+// }
 
 exports.create = async (form) => {
 
@@ -72,30 +72,28 @@ exports.create = async (form) => {
         await newParent.save();
         let sz = newParent.children.length
         if (sz) {
-            var child = new Child({
-                familyName: newParent.familyUsername, email: form.children[0],
-                familyPassword: newParent.familyPassword
-            });
-        }
-        await child.save();
-        for (let i = 1; i < sz; i++) {
-            child.email = newParent.children[i];
-            await child.save();
+            for (let i = 0; i < sz; i++) {
+                var child = new Child({
+                    parent: newParent._id,
+                    familyName: newParent.familyUsername,
+                    email: form.children[i],
+                    familyPassword: newParent.familyPassword
+                });
+                await child.save();
+            }
         }
         let helperSz = newParent.helpers.length
         if (helperSz) {
-            var helper = new Helper({
-                familyName: newParent.familyUsername, email: newParent.helpers[0].email,
-                permissions: newParent.helpers[0].permissions,
-                familyPassword: newParent.familyPassword
-            });
-        }
-
-        await helper.save();
-        for (let i = 1; i < helperSz; i++) {
-            helper.email = newParent.helpers[i].email;
-            helper.permissions = newParent.helpers[i].permissions;
-            await helper.save();
+            for (let i = 0; i < helperSz; i++) {
+                var helper = new Helper({
+                    parent: newParent._id,
+                    familyName: newParent.familyUsername,
+                    email: newParent.helpers[i].email,
+                    permissions: newParent.helpers[i].permissions,
+                    familyPassword: newParent.familyPassword
+                });
+                await helper.save();
+            }
         }
         return {
             success: true,
@@ -181,12 +179,13 @@ exports.remove = async (_id) => {
 
 exports.comparePassword = async (familyEmail, password) => {
     try {
-        // check if family email is the parent email or the other parent email
         let parent = await this.isExist({ email: familyEmail })
+        console.log('parent', parent);
         let otherParent = await this.isExist({ otherParentEmail: familyEmail })
         if (parent.success) {
             match = await bcrypt.compare(password, parent.record.familyPassword)
             if (match) {
+                console.log('parent.record');
                 return {
                     success: true,
                     record: parent.record,
