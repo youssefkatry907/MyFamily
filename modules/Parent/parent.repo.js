@@ -34,36 +34,6 @@ exports.isExist = async (filter) => {
 
 }
 
-// exports.get = async (_id) => {
-//     try {
-//         // get the children of a parent by the parent's token
-//         let parent = await this.isExist(_id);
-//         console.log('parent', parent);
-//         if (parent.success) {
-//             return {
-//                 success: true,
-//                 record: parent.record,
-//                 code: 200
-//             }
-//         }
-//         else {
-//             return {
-//                 success: false,
-//                 error: "Parent is not found!",
-//                 code: 404
-//             };
-//         }
-//     } catch (err) {
-//         console.log(`err.message`, err.message);
-//         return {
-//             success: false,
-//             code: 500,
-//             error: "Unexpected Error!"
-//         };
-//     }
-
-// }
-
 exports.create = async (form) => {
 
     const parent = await this.isExist({ email: form.email });
