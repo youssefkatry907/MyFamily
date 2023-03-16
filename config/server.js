@@ -6,4 +6,4 @@ app.listen(process.env.PORT || 8000, () => {
 })
 
 
-module.exports = app; 
+exports.app = functions.https.onRequest(app);
