@@ -10,6 +10,7 @@
     "nodemon": "^2.0.21"
   },
   "scripts": {
-    "start": "nodemon config/server.js"
+    "start": "nodemon config/server.js",
+    "build": "node config/app.js"
   }
 }
