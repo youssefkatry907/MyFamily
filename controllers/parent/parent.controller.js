@@ -1,6 +1,6 @@
 const parent = require('../../modules/Parent/parent.repo');
-const Parent = require('../../modules/Parent/parent.model');
 const jwt = require('../../helpers/jwt.helper');
+const checker = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
     try {
@@ -63,6 +63,29 @@ exports.logout = async (req, res) => {
     } catch (err) {
         console.log(`err.message`, err.message);
         res.status(500).json({
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        });
+    }
+}
+
+exports.addMember = async (req, res) => {
+    try {
+        const parentToken = req.headers.authorization.split(' ')[1];
+        let decodedToken = checker.verify(parentToken, process.env.ACCESS_TOKEN_SECRET);
+        if (decodedToken) {
+            const form = req.body;
+            const result = await parent.add(form, decodedToken._id);
+            return res.status(200).json({
+                success: true,
+                code: 200,
+                message: "Member Added Successfully!"
+            });
+        }
+    } catch (err) {
+        console.log(`err.message`, err.message);
+        return res.status(500).json({
             success: false,
             code: 500,
             error: "Unexpected Error!"

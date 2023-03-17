@@ -4,7 +4,7 @@ let Helper = require('../Helper/helper.model')
 let bcrypt = require("bcrypt");
 
 
-// Path: modules\parent\parent.controller.js
+
 
 exports.isExist = async (filter) => {
     try {
@@ -32,6 +32,50 @@ exports.isExist = async (filter) => {
         };
     }
 
+}
+
+// add members to parent
+exports.add = async (form, parentId) => {
+    try {
+        const parent = await this.isExist({ _id: parentId });
+        if (parent.success) {
+            if (form.memberType == "child") {
+                for (let i = 0; i < form.membersNum; i++) {
+                    var child = new Child({
+                        parent: parentId,
+                        familyName: parent.record.familyUsername,
+                        email: form.email[i],
+                        familyPassword: parent.record.familyPassword
+                    });
+                    await child.save();
+                }
+            }
+            else if (form.memberType == "helper") {
+                for (let i = 0; i < form.membersNum; i++) {
+                    var helper = new Helper({
+                        parent: parentId,
+                        familyName: parent.record.familyUsername,
+                        email: form.email[i],
+                        familyPassword: parent.record.familyPassword
+                    });
+                    await helper.save();
+                }
+            }
+        }
+        else {
+            return {
+                success: false,
+                code: 404,
+                error: "Parent is not found!"
+            };
+        }
+    } catch (err) {
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
 }
 
 exports.create = async (form) => {

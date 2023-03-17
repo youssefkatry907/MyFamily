@@ -8,5 +8,6 @@ app.post("/register", validator(registerValidation), parentController.register);
 app.post("/login", validator(loginValidation), parentController.login); 
 app.post("/resetPassword", validator(resetPasswordValidation), parentController.resetPassword);
 app.put("/logout", parentController.logout);
+app.post("/addMember", parentController.addMember);
 
 module.exports = app  
