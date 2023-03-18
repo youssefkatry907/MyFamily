@@ -4,6 +4,8 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "firebase": "^9.18.0",
+    "firebase-functions": "^4.2.1",
+    "firebase-tools": "^11.24.1",
     "gitignore": "^0.7.0",
     "joi": "^17.8.3",
     "jsonwebtoken": "^9.0.0",
