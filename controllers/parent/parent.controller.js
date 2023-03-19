@@ -80,7 +80,6 @@ exports.addMember = async (req, res) => {
             return res.status(200).json({
                 success: true,
                 code: 200,
-                message: "Member Added Successfully!"
             });
         }
     } catch (err) {
