@@ -73,7 +73,7 @@ exports.logout = async (req, res) => {
 exports.addMember = async (req, res) => {
     try {
         const parentToken = req.headers.authorization.split(' ')[1];
-        let decodedToken = checker.verify(parentToken, process.env.ACCESS_TOKEN_SECRET);
+        let decodedToken = checker.verify(parentToken, "MyFamilyTeam");
         if (decodedToken) {
             const form = req.body;
             const result = await parent.add(form, decodedToken._id);
