@@ -44,7 +44,7 @@ exports.add = async (form, parentId) => {
                     var child = new Child({
                         parent: parentId,
                         familyName: parent.record.familyUsername,
-                        email: form.email[i],
+                        email: form.members[i].email,
                         familyPassword: parent.record.familyPassword
                     });
                     await child.save();
@@ -55,7 +55,8 @@ exports.add = async (form, parentId) => {
                     var helper = new Helper({
                         parent: parentId,
                         familyName: parent.record.familyUsername,
-                        email: form.email[i],
+                        email: form.members[i].email,
+                        permissions: form.members[i].permissions,
                         familyPassword: parent.record.familyPassword
                     });
                     await helper.save();

@@ -1,0 +1,100 @@
+[debug] [2023-03-19T10:04:57.302Z] ----------------------------------------------------------------------
+[debug] [2023-03-19T10:04:57.305Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ELMasria\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2023-03-19T10:04:57.306Z] CLI Version:   11.24.1
+[debug] [2023-03-19T10:04:57.306Z] Platform:      win32
+[debug] [2023-03-19T10:04:57.306Z] Node Version:  v16.7.0
+[debug] [2023-03-19T10:04:57.308Z] Time:          Sun Mar 19 2023 12:04:57 GMT+0200 (Eastern European Standard Time)
+[debug] [2023-03-19T10:04:57.308Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-03-19T10:04:57.437Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-03-19T10:04:57.437Z] > authorizing via signed-in user (youssefkatry907@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  F:\Backend Projects\MyFamily
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2023-03-19T10:05:03.498Z] Using project from CLI flag: family-88c8c
+[debug] [2023-03-19T10:05:03.502Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/family-88c8c [none]
+[debug] [2023-03-19T10:05:14.625Z] Failed to make request to https://firebase.googleapis.com/v1beta1/projects/family-88c8c
+[debug] [2023-03-19T10:05:19.665Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\ELMasria\AppData\Roaming\npm\node_modules\firebase-tools\lib\utils.js:253:49)
+    at listOnTimeout (node:internal/timers:557:17)
+    at processTimers (node:internal/timers:500:7)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-03-19T10:05:43.743Z] ----------------------------------------------------------------------
+[debug] [2023-03-19T10:05:43.747Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ELMasria\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js use --add
+[debug] [2023-03-19T10:05:43.747Z] CLI Version:   11.24.1
+[debug] [2023-03-19T10:05:43.747Z] Platform:      win32
+[debug] [2023-03-19T10:05:43.748Z] Node Version:  v16.7.0
+[debug] [2023-03-19T10:05:43.749Z] Time:          Sun Mar 19 2023 12:05:43 GMT+0200 (Eastern European Standard Time)
+[debug] [2023-03-19T10:05:43.749Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-03-19T10:05:43.872Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-03-19T10:05:43.873Z] > authorizing via signed-in user (youssefkatry907@gmail.com)
+[debug] [2023-03-19T10:05:43.878Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=1000
+[debug] [2023-03-19T10:06:13.884Z] Timeout reached making request to https://firebase.googleapis.com/v1beta1/projects?pageSize=1000
+[debug] [2023-03-19T10:06:18.893Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\ELMasria\AppData\Roaming\npm\node_modules\firebase-tools\lib\utils.js:253:49)
+    at listOnTimeout (node:internal/timers:557:17)
+    at processTimers (node:internal/timers:500:7)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-03-19T10:06:39.967Z] ----------------------------------------------------------------------
+[debug] [2023-03-19T10:06:39.970Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ELMasria\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2023-03-19T10:06:39.971Z] CLI Version:   11.24.1
+[debug] [2023-03-19T10:06:39.971Z] Platform:      win32
+[debug] [2023-03-19T10:06:39.971Z] Node Version:  v16.7.0
+[debug] [2023-03-19T10:06:39.972Z] Time:          Sun Mar 19 2023 12:06:39 GMT+0200 (Eastern European Standard Time)
+[debug] [2023-03-19T10:06:39.973Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-03-19T10:06:40.102Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-03-19T10:06:40.102Z] > authorizing via signed-in user (youssefkatry907@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  F:\Backend Projects\MyFamily
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2023-03-19T10:06:50.584Z] Using project from CLI flag: family-88c8c
+[debug] [2023-03-19T10:06:50.588Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/family-88c8c [none]
+[debug] [2023-03-19T10:07:20.601Z] Timeout reached making request to https://firebase.googleapis.com/v1beta1/projects/family-88c8c
+[debug] [2023-03-19T10:07:25.637Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\ELMasria\AppData\Roaming\npm\node_modules\firebase-tools\lib\utils.js:253:49)
+    at listOnTimeout (node:internal/timers:557:17)
+    at processTimers (node:internal/timers:500:7)
+[error] 
+[error] Error: An unexpected error has occurred.
