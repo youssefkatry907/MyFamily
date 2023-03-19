@@ -5,7 +5,7 @@ exports.getChildren = async (req, res) => {
     // get all children of a parent using parentToken
     try {
         const parentToken = req.headers.authorization.split(' ')[1];
-        let decodedToken = jwt.verify(parentToken, process.env.ACCESS_TOKEN_SECRET);
+        let decodedToken = jwt.verify(parentToken, "MyFamilyTeam");
         if (decodedToken) {
             const result = await child.getAll(decodedToken._id);
             return res.status(200).json({
