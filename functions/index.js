@@ -1,8 +1,8 @@
 const functions = require("firebase-functions");
-const myApp = require("../config/server"); // Causes Error (can't find file)
+const app = require("./config/app");
 
-const admin = require("firebase-admin");
-admin.initializeApp();
+// const admin = require("firebase-admin");
+// admin.initializeApp();
 
 
-exports.family = functions.https.onRequest(myApp);
+exports.familyFinal = functions.https.onRequest(app)
