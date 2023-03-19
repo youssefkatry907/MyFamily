@@ -1,10 +1,9 @@
 const app = require('./app')
 const chat = require("../modules/Chat/chat.repo")
-const functions = require('firebase-functions');
 
-let server = app.listen(process.env.PORT || 8000, () => {
-    console.log(`Server is up and runing on port ${process.env.PORT}!`)
-})
+// let server = app.listen(4000, () => {
+//     console.log(`Server is up and runing on port ${process.env.PORT}!`)
+// })
 
 var io = require('socket.io')(server);
 
@@ -36,5 +35,5 @@ io.on('connection', (socket) => {
 
 });
 
-// module.exports = app;
-exports.app = functions.https.onRequest(app);
+module.exports = app;
+// exports.app = functions.https.onRequest(app);
