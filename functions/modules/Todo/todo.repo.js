@@ -7,12 +7,10 @@ exports.getAll = async (id) => {
         const todo = await Todo.find().populate('toDoList.child').lean();
         let sz = todo[0].toDoList.length;
         for (let i = 0; i < sz; i++) {
-            console.log(`ids`,todo[0].toDoList[i].child.parent, id);
             if (todo[0].toDoList[i].child.parent == id) {
-                console.log(`found`);
                 return {
                     success: true,
-                    record: todo,
+                    toDoList: todo[0].toDoList[i],
                     code: 200
                 };
             }
