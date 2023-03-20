@@ -1,9 +1,10 @@
 let study = require('../../modules/Study/study.repo')
+let checker = require('jsonwebtoken');
 
 exports.addSubject = async (req, res) => {
     try {
         let form = req.body;
-        let result = await study.addSubject(form);
+        let result = await study.add(form);
         return res.status(200).json(result);
     } catch (err) {
         return res.status(500).json({
@@ -16,7 +17,9 @@ exports.addSubject = async (req, res) => {
 
 exports.getStudies = async (req, res) => {
     try {
-        let result = await study.get();
+        let token = req.headers.authorization.split(' ')[1];
+        let parent = checker.verify(token, "MyFamilyTeam");
+        let result = await study.get(parent._id);
         return res.status(200).json(result);
     } catch (err) {
         console.log(err.message);

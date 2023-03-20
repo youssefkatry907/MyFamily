@@ -28,31 +28,35 @@ exports.isExist = async (filter) => {
 
 }
 
-exports.add = async (form) => {
+exports.add = async (form, id) => {
     try {
         const newEntertainment = new Entertainment(form);
-       
+
         let entertainment = await this.isExist({ title: form.title });
-        
+
         if (entertainment.success) {
             for (let i = 0; i < form.suggestions.length; i++) {
                 let suggestion = newEntertainment.suggestions.find(s => s.suggestion == form.suggestions[i].suggestion);
                 suggestion.count++;
             }
         }
-        let sum = 0, percentage = 0;
-        for (let i = 0; i < form.suggestions.length; i++) {
-            percentage = newEntertainment.suggestions[i].count;
-            if (!percentage)
-                newEntertainment.suggestions[i].count++;
-            sum += percentage;
+        else {
+            newEntertainment.suggestions = form.suggestions;
         }
-        for (let i = 0; i < form.suggestions.length; i++) {
-            newEntertainment.suggestions[i].percentage = (newEntertainment.suggestions[i].count / sum) * 100;
-        }
-
-        await newEntertainment.save();
         console.log(`newEntertainment`, newEntertainment);
+        let sum = 0, percentage = 0;
+            for (let i = 0; i < form.suggestions.length; i++) {
+                percentage = newEntertainment.suggestions[i].count;
+                if (!percentage)
+                    newEntertainment.suggestions[i].count++;
+                sum += percentage;
+            }
+            for (let i = 0; i < form.suggestions.length; i++) {
+                newEntertainment.suggestions[i].percentage = (newEntertainment.suggestions[i].count / sum) * 100;
+            }
+        newEntertainment.parentId = id;
+        await newEntertainment.save();
+        // console.log(`newEntertainment`, newEntertainment);
         return {
             success: true,
             record: newEntertainment,
@@ -101,9 +105,9 @@ exports.remove = async (_id) => {
     }
 }
 
-exports.getAll = async () => {
+exports.getAll = async (id) => {
     try {
-        const entertainments = await Entertainment.find().lean();
+        const entertainments = await Entertainment.find({ parentId: id }).lean();
         if (entertainments) {
             return {
                 success: true,

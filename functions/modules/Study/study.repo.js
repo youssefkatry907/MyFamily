@@ -28,17 +28,12 @@ exports.isExist = async (filter) => {
 
 }
 
-exports.addSubject = async (form) => {
+exports.add = async (form) => {
     try {
         let subject = await this.isExist({ "study.child": form.child });
-        console.log('filter', subject);
-        if (subject.code == 500) return {
-            success: false,
-            code: 500,
-            error: "Unexpected Error!"
-        };
+        // console.log('filter', subject);
         if (subject.success) {
-            console.log(subject.record);
+            // console.log(subject.record);
             let newsubject = subject.record.study;
             for (let i = 0; i < newsubject.length; i++) {
                 if (newsubject[i].child == form.child) {
@@ -80,18 +75,27 @@ exports.addSubject = async (form) => {
 }
 
 
-exports.get = async () => {
+exports.get = async (id) => {
     try {
-        // return all studies and populate all children
-        const study = await Study.find().lean();
-        if (study) {
-            return {
-                success: true,
-                study: study[0].study,
-                code: 200
-            };
+        // return all studies with parent id and populate all children
+        let study = await Study.find().populate('study.child').lean();
+        let sz = study[0].study.length;
+        for (let i = 0; i < sz; i++) {
+            if (study[0].study[i].child.parent == id) {
+                return {
+                    success: true,
+                    study: study[0].study[i],
+                    code: 200
+                };
+            }
         }
+        return {
+            success: false,
+            code: 404,
+            error: "study is not found!"
+        };
     } catch (err) {
+        console.log(err.message);
         return {
             success: false,
             code: 500,
