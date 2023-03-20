@@ -80,15 +80,21 @@ exports.get = async (id) => {
         // return all studies with parent id and populate all children
         let study = await Study.find().populate('study.child').lean();
         let sz = study[0].study.length;
+        let studies = [];
         for (let i = 0; i < sz; i++) {
             if (study[0].study[i].child.parent == id) {
-                return {
-                    success: true,
-                    study: study[0].study[i],
-                    code: 200
-                };
+                studies.push(study[0].study[i]);
             }
         }
+        
+        if (studies.length > 0) {
+            return {
+                success: true,
+                study: studies,
+                code: 200
+            };
+        }
+
         return {
             success: false,
             code: 404,
