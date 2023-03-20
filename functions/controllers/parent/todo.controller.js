@@ -31,7 +31,7 @@ exports.getTasks = async (req, res) => {
         let todo = await todoRepo.getAll(parent._id);
         if (todo.success) {
 
-            return res.status(200).json(todo);
+            return res.status(200).json({toDoList: todo.toDoList});
         }
         else {
             return res.status(404).json({

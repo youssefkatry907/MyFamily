@@ -6,14 +6,23 @@ exports.getAll = async (id) => {
         // return all tasks and populate all children
         const todo = await Todo.find().populate('toDoList.child').lean();
         let sz = todo[0].toDoList.length;
+        let todoList = [];
         for (let i = 0; i < sz; i++) {
+            console.log(todo[0].toDoList[i].child.parent, id);
+            console.log(todo[0].toDoList[i].child.parent == id);
             if (todo[0].toDoList[i].child.parent == id) {
-                return {
-                    success: true,
-                    toDoList: todo[0].toDoList[i],
-                    code: 200
-                };
+                todoList.push(todo[0].toDoList[i]);
             }
+        }
+        console.log(todoList.length);
+        
+        if (todoList.length > 0) {
+            console.log(todoList.length);
+            return {
+                success: true,
+                toDoList: todoList,
+                code: 200
+            };
         }
         return {
             success: false,
