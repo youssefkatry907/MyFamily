@@ -1,18 +1,29 @@
 let Todo = require('./todo.model')
 
 
-exports.getAll = async () => {
+exports.getAll = async (id) => {
     try {
         // return all tasks and populate all children
         const todo = await Todo.find().populate('toDoList.child').lean();
-        if (todo) {
-            return {
-                success: true,
-                record: todo,
-                code: 200
-            };
+        let sz = todo[0].toDoList.length;
+        for (let i = 0; i < sz; i++) {
+            console.log(`ids`,todo[0].toDoList[i].child.parent, id);
+            if (todo[0].toDoList[i].child.parent == id) {
+                console.log(`found`);
+                return {
+                    success: true,
+                    record: todo,
+                    code: 200
+                };
+            }
         }
+        return {
+            success: false,
+            code: 404,
+            error: "todo is not found!"
+        };
     } catch (err) {
+        console.log(err.message);
         return {
             success: false,
             code: 500,

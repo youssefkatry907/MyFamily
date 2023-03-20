@@ -9,8 +9,8 @@ var io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
 
-    console.log('a user connected');
 
+    console.log('a user connected');
 
     socket.on('sendMessage', async (msg) => {
         await chat.create(msg);

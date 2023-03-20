@@ -1,9 +1,12 @@
 let entertainmentRepo = require('../../modules/Entertainment/entertainment.repo');
+const jwt = require('jsonwebtoken');
 
 exports.addEntertainment = async (req, res) => {
     try {
+        let token = req.headers.authorization.split(' ')[1];
+        let parent = jwt.verify(token, "MyFamilyTeam")
         const entertainmentTitle = req.body;
-        const entertainment = await entertainmentRepo.add(entertainmentTitle);
+        const entertainment = await entertainmentRepo.add(entertainmentTitle, parent._id);
         if (entertainment.success) {
             return res.status(201).json({
                 success: true,
@@ -26,7 +29,9 @@ exports.addEntertainment = async (req, res) => {
 
 exports.getAllEntertainment = async (req, res) => {
     try {
-        const entertainment = await entertainmentRepo.getAll();
+        let token = req.headers.authorization.split(' ')[1];
+        let parent = jwt.verify(token, "MyFamilyTeam")
+        const entertainment = await entertainmentRepo.getAll(parent._id);
         if (entertainment.success) {
             return res.status(200).json({
                 success: true,

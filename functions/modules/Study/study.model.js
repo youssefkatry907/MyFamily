@@ -3,6 +3,7 @@ let mongoose = require('mongoose')
 let studySchema = mongoose.Schema({
     study: [
         {
+            parent: { type: mongoose.Types.ObjectId, ref: 'parents' },
             child: { type: mongoose.Types.ObjectId, ref: 'childrens' },
             subjects: [
                 {

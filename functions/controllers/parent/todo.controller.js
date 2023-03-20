@@ -1,4 +1,5 @@
 const todoRepo = require('../../modules/Todo/todo.repo')
+let jwt = require('jsonwebtoken');
 
 exports.addTask = async (req, res) => {
     try {
@@ -8,7 +9,7 @@ exports.addTask = async (req, res) => {
                 success: true,
                 message: "Task Added successfully"
             });
-        } else{
+        } else {
             res.status(todo.code).json({
                 success: todo.success,
                 message: todo.error
@@ -25,12 +26,24 @@ exports.addTask = async (req, res) => {
 exports.getTasks = async (req, res) => {
     // return all tasks and populate all children
     try {
-        let todo = await todoRepo.getAll();
+        let token = req.headers.authorization.split(' ')[1];
+        let parent = jwt.verify(token, "MyFamilyTeam")
+        let todo = await todoRepo.getAll(parent._id);
         if (todo) {
-            return res.status(200).json( {toDoList: todo.record[0].toDoList});
+            // console.log(`todo`,todo.record[0].toDoList);
+            return res.status(200).json({
+                toDoList: todo.record[0].toDoList
+            });
+        }
+        else {
+            return res.status(404).json({
+                success: false,
+                error: "todo is not found!"
+            });
         }
     } catch (err) {
-       return res.status(500).json({
+        console.log(err.message);
+        return res.status(500).json({
             success: false,
             error: "Unexpected Error!"
         });
