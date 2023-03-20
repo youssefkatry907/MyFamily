@@ -83,7 +83,7 @@ exports.addSubject = async (form) => {
 exports.get = async () => {
     try {
         // return all studies and populate all children
-        const study = await Study.find().populate('study.child').lean();
+        const study = await Study.find().lean();
         if (study) {
             return {
                 success: true,

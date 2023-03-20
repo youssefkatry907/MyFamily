@@ -23,7 +23,7 @@ exports.isExist = async (id) => {
 }
 
 exports.get = async (id) => {
-    if (id) return await isExist(id);
+    if (id) return await this.isExist(id);
     else {
         return {
             success: false,
