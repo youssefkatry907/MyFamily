@@ -41,10 +41,12 @@ exports.login = async (req, res) => {
     }
 }
 
-exports.resetPassword = async (req, res) => {
+exports.changePassword = async (req, res) => {
     try {
-        const result = await parent.resetPassword(req.body.email, req.body.newPassword);
-        res.status(result.code).json(result);
+        const token = req.headers.authorization.split(' ')[1];
+        let decodedToken = checker.verify(token, "MyFamilyTeam");
+        const result = await parent.resetPassword(decodedToken._id, req.body.newPassword);
+        res.status(result.code).json({ success: result.success, code: result.code });
     } catch (err) {
         console.log(`err.message`, err.message);
         res.status(500).json({
@@ -54,6 +56,25 @@ exports.resetPassword = async (req, res) => {
         });
     }
 
+}
+
+exports.updateProfile = async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        let decodedToken = checker.verify(token, "MyFamilyTeam");
+        const result = await parent.update(decodedToken._id, req.body);
+        res.status(result.code).json({
+            success: result.success,
+            code: result.code
+        });
+    } catch (err) {
+        console.log(`err.message`, err.message);
+        res.status(500).json({
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        });
+    }
 }
 
 exports.logout = async (req, res) => {

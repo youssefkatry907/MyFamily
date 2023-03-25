@@ -271,13 +271,14 @@ exports.logout = async (_id) => {
     }
 }
 
-exports.resetPassword = async (email, newPassword) => {
+exports.resetPassword = async (id, newPassword) => {
     try {
-        let parent = await this.isExist({ email })
+        let parent = await this.isExist({ _id: id })
         let saltrouds = 5;
         if (parent.success) {
             let hashedPassword = await bcrypt.hash(newPassword, saltrouds)
-            await Parent.findOneAndUpdate({ email }, { password: hashedPassword })
+            await Parent.findByIdAndUpdate({ _id: id }, { password: hashedPassword })
+            await Parent.findByIdAndUpdate({ _id: id }, { familyPassword: hashedPassword })
             return {
                 success: true,
                 code: 200
@@ -288,6 +289,7 @@ exports.resetPassword = async (email, newPassword) => {
             error: parent.error
         };
     } catch (err) {
+        console.log(`err.message`, err.message);
         return {
             success: false,
             code: 500,
