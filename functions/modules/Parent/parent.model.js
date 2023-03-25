@@ -3,7 +3,7 @@ let bcrypt = require("bcrypt");
 let saltrounds = 5;
 
 let parentSchema = mongoose.Schema({
-    langauge: { type: String, required: true, default: "en" },
+    language: { type: String, required: true, default: "en" },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true, dropdups: true },
     password: { type: String, required: true },

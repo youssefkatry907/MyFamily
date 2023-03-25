@@ -23,11 +23,11 @@ module.exports = {
             }),
 
 
-            password: joi.string().empty().required().pattern(new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)).messages({
+            password: joi.string().empty().required().min(8).messages({
                 "string.base": "please enter a valid password",
                 "any.required": "password must be entered",
                 "string.empty": "password cannot be empty",
-                "string.pattern.base": "please enter a password A-Z, a-z, 1-9, special character"
+                "string.min": "password must be at least 8 characters"
             }),
 
             otherParentName: joi.string().optional().messages({
@@ -45,14 +45,14 @@ module.exports = {
             familyUsername: joi.string().required().messages({
                 "string.base": "please enter a valid username",
                 "any.required": "username must be entered",
-                "string.empty": "username cannot be empty"
+                "string.empty": "username cannot be empty",
             }),
 
-            familyPassword: joi.string().empty().required().pattern(new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)).messages({
+            familyPassword: joi.string().empty().required().min(8).messages({
                 "string.base": "please enter a valid password",
                 "any.required": "password must be entered",
                 "string.empty": "password cannot be empty",
-                "string.pattern.base": "please enter a valid password A-Z, a-z, 1-9, special character"
+                "string.min": "password must be at least 8 characters"
             }),
 
             helpersNo: joi.number().optional().messages({
@@ -102,13 +102,12 @@ module.exports = {
                 "string.empty": "email cannot be empty"
             }),
 
-            familyPassword: joi.string().empty().required().pattern(new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/))
-                .messages({
-                    "string.base": "please enter a valid password",
-                    "any.required": "password must be entered",
-                    "string.empty": "password cannot be empty",
-                    "string.pattern.base": "please enter a valid password A-Z, a-z, 1-9, special character"
-                })
+            familyPassword: joi.string().empty().required().min(8).messages({
+                "string.base": "please enter a valid password",
+                "any.required": "password must be entered",
+                "string.empty": "password cannot be empty",
+                "string.min": "password must be at least 8 characters"
+            })
         })
     },
 
@@ -117,20 +116,12 @@ module.exports = {
     resetPasswordValidation: {
         body: joi.object().required().keys({
 
-            email: joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com'] } }).empty().required().messages({
-                "string.email": "please enter a valid email",
-                "any.required": "email must be entered",
-                "string.empty": "email cannot be empty"
-            }),
-
-
-            newPassword: joi.string().empty().required().pattern(new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/))
-                .messages({
-                    "string.base": "please enter a valid new password",
-                    "any.required": "new password must be entered",
-                    "string.empty": "new password cannot be empty",
-                    "string.pattern.base": "please enter a valid new password A-Z, a-z, 1-9, special character"
-                })
+            newPassword: joi.string().empty().required().min(8).messages({
+                "string.base": "please enter a valid password",
+                "any.required": "password must be entered",
+                "string.empty": "password cannot be empty",
+                "string.min": "password must be at least 8 characters"
+            })
         })
     },
 }

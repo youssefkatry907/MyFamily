@@ -5,8 +5,9 @@ const { registerValidation, loginValidation, resetPasswordValidation } = require
 const validator = require('../../helpers/validation.helper')
 
 app.post("/register", validator(registerValidation), parentController.register);
-app.post("/login", validator(loginValidation), parentController.login); 
-app.post("/resetPassword", validator(resetPasswordValidation), parentController.resetPassword);
+app.post("/login", validator(loginValidation), parentController.login);
+app.put("/updateProfile", parentController.updateProfile); 
+app.put("/changePassword", validator(resetPasswordValidation), parentController.changePassword);
 app.put("/logout", parentController.logout);
 app.post("/addMember", parentController.addMember);
 
