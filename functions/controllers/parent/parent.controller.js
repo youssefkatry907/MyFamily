@@ -91,24 +91,46 @@ exports.logout = async (req, res) => {
     }
 }
 
-exports.addMember = async (req, res) => {
+exports.deleteParent = async (req, res) => {
     try {
-        const parentToken = req.headers.authorization.split(' ')[1];
-        let decodedToken = checker.verify(parentToken, "MyFamilyTeam");
+        const token = req.headers.authorization.split(' ')[1];
+        let decodedToken = checker.verify(token, "MyFamilyTeam");
         if (decodedToken) {
-            const form = req.body;
-            const result = await parent.add(form, decodedToken._id);
-            return res.status(200).json({
+            await parent.remove(decodedToken._id);
+            res.status(200).json({
                 success: true,
                 code: 200,
-            });
+            })
         }
-    } catch (err) {
+    }
+    catch (err) {
         console.log(`err.message`, err.message);
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             code: 500,
             error: "Unexpected Error!"
         });
     }
 }
+
+    exports.addMember = async (req, res) => {
+        try {
+            const parentToken = req.headers.authorization.split(' ')[1];
+            let decodedToken = checker.verify(parentToken, "MyFamilyTeam");
+            if (decodedToken) {
+                const form = req.body;
+                const result = await parent.add(form, decodedToken._id);
+                return res.status(200).json({
+                    success: true,
+                    code: 200,
+                });
+            }
+        } catch (err) {
+            console.log(`err.message`, err.message);
+            return res.status(500).json({
+                success: false,
+                code: 500,
+                error: "Unexpected Error!"
+            });
+        }
+    }
