@@ -9,6 +9,7 @@ app.post("/login", validator(loginValidation), parentController.login);
 app.put("/updateProfile", parentController.updateProfile); 
 app.put("/changePassword", validator(resetPasswordValidation), parentController.changePassword);
 app.put("/logout", parentController.logout);
+app.delete("/remove", parentController.deleteParent);
 app.post("/addMember", parentController.addMember);
 
 module.exports = app  

@@ -23,7 +23,7 @@ module.exports = {
             }),
 
 
-            password: joi.string().empty().required().min(8).messages({
+            password: joi.string().empty().required().min(7).messages({
                 "string.base": "please enter a valid password",
                 "any.required": "password must be entered",
                 "string.empty": "password cannot be empty",
@@ -48,7 +48,7 @@ module.exports = {
                 "string.empty": "username cannot be empty",
             }),
 
-            familyPassword: joi.string().empty().required().min(8).messages({
+            familyPassword: joi.string().empty().required().min(7).messages({
                 "string.base": "please enter a valid password",
                 "any.required": "password must be entered",
                 "string.empty": "password cannot be empty",
@@ -102,7 +102,7 @@ module.exports = {
                 "string.empty": "email cannot be empty"
             }),
 
-            familyPassword: joi.string().empty().required().min(8).messages({
+            familyPassword: joi.string().empty().required().min(7).messages({
                 "string.base": "please enter a valid password",
                 "any.required": "password must be entered",
                 "string.empty": "password cannot be empty",
@@ -116,7 +116,7 @@ module.exports = {
     resetPasswordValidation: {
         body: joi.object().required().keys({
 
-            newPassword: joi.string().empty().required().min(8).messages({
+            newPassword: joi.string().empty().required().min(7).messages({
                 "string.base": "please enter a valid password",
                 "any.required": "password must be entered",
                 "string.empty": "password cannot be empty",
