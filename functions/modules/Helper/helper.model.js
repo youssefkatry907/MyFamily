@@ -9,6 +9,9 @@ let helperSchema = mongoose.Schema({
     email: { type: String, required: true, ref: 'parentModel.helpers.email' },
     familyPassword: { type: String, required: true, ref: 'parentModel.familyPassword' },
     image: { type: String, required: false },
+    groups: [
+        { type: mongoose.Types.ObjectId, ref: 'groups' }
+    ],
     // call the helpers permissions from parent model
     permissions: { type: Array, ref: 'parentModel.helpers.permissions' }
 

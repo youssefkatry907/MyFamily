@@ -20,6 +20,9 @@ let parentSchema = mongoose.Schema({
         }],
     },
     children: { type: Array },
+    groups: [
+        { type: mongoose.Types.ObjectId, ref: 'groups' }
+    ],
     role: { type: String, default: "parent" },
 })
 

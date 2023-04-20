@@ -9,6 +9,9 @@ let childSchema = mongoose.Schema({
     email: { type: String, required: true, ref: 'parentModel.children' },
     familyPassword: { type: String, required: true, ref: 'parentModel.familyPassword' },
     image: { type: String, required: false },
+    groups: [
+        { type: mongoose.Types.ObjectId, ref: 'groups' }
+    ],
     // familyId
 })
 
