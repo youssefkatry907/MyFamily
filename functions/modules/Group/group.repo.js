@@ -1,17 +1,55 @@
 let Group = require('./group.model');
 
-exports.list = async () => {
-    let groups = await Group.find();
-    return groups;
+exports.list = async (filter) => {
+    try {
+        let groups = await Group.find(filter);
+        return {
+            success: true,
+            code: 200,
+            groups,
+        };
+    }
+    catch (error) {
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
 }
 
 exports.create = async (form) => {
-    let group = new Group(form);
-    await group.save();
-    return group;
+    try {
+        let group = new Group(form);
+        await group.save();
+        return {
+            success: true,
+            code: 200,
+            group
+        };
+    } catch (error) {
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
 }
 
 exports.get = async (id) => {
-    let group = await Group.findById(id);
-    return group;
+    try {
+        let group = Group.findById(id);
+        return {
+            success: true,
+            code: 200,
+            group
+        };
+    }
+    catch (error) {
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
 }

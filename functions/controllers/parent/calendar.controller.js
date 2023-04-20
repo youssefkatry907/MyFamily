@@ -1,11 +1,29 @@
 let calendar = require('../../modules/calendar/calendar.repo')
 
 exports.addEvent = async (req, res) => {
-    let event = await calendar.add(req.body)
-    res.status(200).json(event)
+    try {
+        let form = req.body
+        let record = await calendar.add(form)
+        res.status(record.code).json({ record })
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        })
+    }
 }
 
 exports.getEvents = async (req, res) => {
-    let events = await calendar.get()
-    res.status(200).json(events)
+    try {
+        let events = await calendar.get()
+        res.status(events.code).json({ events })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        })
+    }
 }
