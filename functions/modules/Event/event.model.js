@@ -5,10 +5,15 @@ let saltrounds = 5;
 
 let eventSchema = mongoose.Schema({
     child: { type: mongoose.Types.ObjectId, ref: 'childrens', required: true },
-    eventName: { type: String, required: true },
-    events: { type: Array },
-    startTime: { type: Date, default: Date.now },
-    endTime: { type: Date, default: Date.now }
+    eventList: [
+        {
+            eventName: { type: String, required: true },
+            description: { type: String },
+            Date: { type: String },
+            startTime: { type: String },
+            endTime: { type: String },
+        }
+    ]
 })
 
 

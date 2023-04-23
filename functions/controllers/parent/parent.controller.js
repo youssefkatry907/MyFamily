@@ -1,10 +1,11 @@
 const parent = require('../../modules/Parent/parent.repo');
 const jwt = require('../../helpers/jwt.helper');
+const uploader = require('../../helpers/uploader.helper');
 const checker = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
     try {
-        const result = await parent.create(req.body);
+        const newImage = await parent.create(req.body);
         res.status(result.code).json(result);
     } catch (err) {
         console.log(`err.message`, err.message);
@@ -113,24 +114,49 @@ exports.deleteParent = async (req, res) => {
     }
 }
 
-    exports.addMember = async (req, res) => {
-        try {
-            const parentToken = req.headers.authorization.split(' ')[1];
-            let decodedToken = checker.verify(parentToken, "MyFamilyTeam");
-            if (decodedToken) {
-                const form = req.body;
-                const result = await parent.add(form, decodedToken._id);
-                return res.status(200).json({
-                    success: true,
-                    code: 200,
-                });
-            }
-        } catch (err) {
-            console.log(`err.message`, err.message);
-            return res.status(500).json({
-                success: false,
-                code: 500,
-                error: "Unexpected Error!"
+exports.addMember = async (req, res) => {
+    try {
+        const parentToken = req.headers.authorization.split(' ')[1];
+        let decodedToken = checker.verify(parentToken, "MyFamilyTeam");
+        if (decodedToken) {
+            const form = req.body;
+            const result = await parent.add(form, decodedToken._id);
+            return res.status(200).json({
+                success: true,
+                code: 200,
             });
         }
+    } catch (err) {
+        console.log(`err.message`, err.message);
+        return res.status(500).json({
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        });
     }
+}
+
+exports.uploadImage = async (req, res) => {
+    try {
+        //console.log(`req.body`);
+        const token = req.headers.authorization.split(' ')[1];
+        let decodedToken = checker.verify(token, "MyFamilyTeam");
+        if (decodedToken) {
+            const newImage = await uploader.uploadImage("parents");
+            // console.log(`newImage`, newImage);
+            let update = await parent.update(decodedToken._id, { image: newImage });
+            res.status(update.code).json({
+                success: update.success,
+                code: update.code,
+                image: newImage
+            });
+        }
+    } catch (err) {
+        console.log(`err.message`, err.message);
+        return res.status(500).json({
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        });
+    }
+}

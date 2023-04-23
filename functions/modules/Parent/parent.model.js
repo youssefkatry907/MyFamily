@@ -23,6 +23,7 @@ let parentSchema = mongoose.Schema({
     groups: [
         { type: mongoose.Types.ObjectId, ref: 'groups' }
     ],
+    image: { type: Object },
     role: { type: String, default: "parent" },
 })
 
