@@ -1,4 +1,4 @@
-let calendar = require('../../modules/calendar/calendar.repo')
+let calendar = require('../../modules/Calendar/calendar.repo')
 
 exports.addEvent = async (req, res) => {
     try {
@@ -7,6 +7,7 @@ exports.addEvent = async (req, res) => {
         res.status(record.code).json({ record })
     }
     catch (error) {
+        // console.log(error);
         res.status(500).json({
             success: false,
             code: 500,
