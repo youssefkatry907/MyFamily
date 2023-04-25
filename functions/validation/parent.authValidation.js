@@ -42,7 +42,7 @@ module.exports = {
                 "string.empty": "email cannot be empty"
             }),
 
-            familyUsername: joi.string().required().messages({
+            familyUserName: joi.string().required().messages({
                 "string.base": "please enter a valid username",
                 "any.required": "username must be entered",
                 "string.empty": "username cannot be empty",
@@ -90,7 +90,7 @@ module.exports = {
     loginValidation: {
         body: joi.object().required().keys({
 
-            familyUsername: joi.string().required().messages({
+            familyUserName: joi.string().required().messages({
                 "string.base": "please enter a valid username",
                 "any.required": "username must be entered",
                 "string.empty": "username cannot be empty"

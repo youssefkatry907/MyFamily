@@ -9,7 +9,7 @@ let parentSchema = mongoose.Schema({
     password: { type: String, required: true },
     otherParentName: { type: String, required: false },
     otherParentEmail: { type: String, required: false, unique: true, dropDups: true },
-    familyUsername: { type: String, required: true },
+    familyUserName: { type: String, required: true, unique: true },
     familyPassword: { type: String, required: true },
     helpersNo: { type: Number },
     childrenNo: { type: Number },
