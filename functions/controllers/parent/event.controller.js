@@ -1,26 +1,34 @@
 let event = require('../../modules/Event/event.repo');
+let checker = require('jsonwebtoken');
 
-
-exports.listEvents = async (req, res) => {
+exports.addEvent = async (req, res) => {
     try {
-        const child = req.tokenData._id;
-        const filter = req.query;
-        const result = await event.list(filter);
-        res.status(result.code).json(result);
-    } catch (err) {
-        console.log(`err.message`, err.message);
+        let form = req.body
+        let record = await event.add(form)
+        res.status(record.code).json({
+            success: record.success,
+            code: record.code,
+            message: record.message
+        })
+    }
+    catch (error) {
+        // console.log(error);
         res.status(500).json({
             success: false,
             code: 500,
             error: "Unexpected Error!"
-        });
+        })
     }
 }
 
-exports.getEvent = async (req, res) => {
+
+exports.listEvents = async (req, res) => {
     try {
-        const result = await event.get(req.query._id);
-        res.status(result.code).json(result);
+        let token = req.headers.authorization.split(' ')[1];
+        let parent = checker.verify(token, "MyFamilyTeam");
+        const familyUserName = parent.familyUserName;
+        const result = await event.list(familyUserName);
+        res.status(result.code).json(result.eventsByDate);
     } catch (err) {
         console.log(`err.message`, err.message);
         res.status(500).json({

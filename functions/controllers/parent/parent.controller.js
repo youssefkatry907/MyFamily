@@ -19,11 +19,12 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        const { familyUsername, familyEmail, familyPassword } = req.body;
+        const { familyUserName, familyEmail, familyPassword } = req.body;
         const result = await parent.comparePassword(familyEmail, familyPassword);
         if (result.success) {
             payload = {
                 _id: result.record._id, name: result.record.name, email: result.record.email,
+                familyUserName,
                 permissions: result.record.permissions
             }
             const token = jwt.generateToken(payload);
