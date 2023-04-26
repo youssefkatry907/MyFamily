@@ -4,7 +4,7 @@ let entertainmentSchema = mongoose.Schema({
     title: { type: String },
     suggestions: [
         {
-            suggestion: { type: String },
+            suggestion: { type: String, unique: true },
             percentage: { type: Number, default: 0 },
             count: { type: Number, default: 0 }
         }

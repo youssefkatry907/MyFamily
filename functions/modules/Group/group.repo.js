@@ -4,8 +4,6 @@ exports.list = async (filter) => {
     try {
         let groups = await Group.find(filter);
         return {
-            success: true,
-            code: 200,
             groups,
         };
     }
