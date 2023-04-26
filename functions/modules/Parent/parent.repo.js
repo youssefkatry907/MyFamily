@@ -43,7 +43,7 @@ exports.add = async (form, parentId) => {
                 for (let i = 0; i < form.membersNum; i++) {
                     var child = new Child({
                         parent: parentId,
-                        familyUserName: parent.record.familyUsername,
+                        familyUserName: parent.record.familyUserName,
                         email: form.members[i].email,
                         familyPassword: parent.record.familyPassword
                     });
@@ -54,7 +54,7 @@ exports.add = async (form, parentId) => {
                 for (let i = 0; i < form.membersNum; i++) {
                     var helper = new Helper({
                         parent: parentId,
-                        familyUserName: parent.record.familyUsername,
+                        familyUserName: parent.record.familyUserName,
                         email: form.members[i].email,
                         permissions: form.members[i].permissions,
                         familyPassword: parent.record.familyPassword
