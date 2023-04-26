@@ -2,10 +2,11 @@ let group = require('../../modules/Group/group.repo');
 
 exports.listGroups = async (req, res) => {
     try {
-        let groups = await group.list();
+        let result = await group.list();
         res.status(200).json({
             success: true,
-            groups
+            code: 200,
+            groups: result.groups
         });
     } catch (error) {
         res.status(500).json({
