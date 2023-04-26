@@ -47,8 +47,10 @@ exports.add = async (form, parentId) => {
                         email: form.members[i].email,
                         familyPassword: parent.record.familyPassword
                     });
+                    await Parent.findByIdAndUpdate(parentId, { $push: { children: form.members[i].email } });
                     await child.save();
                 }
+                await Parent.findByIdAndUpdate(parentId, { childrenNo: form.membersNum + parent.record.childrenNo });
             }
             else if (form.memberType == "helper") {
                 for (let i = 0; i < form.membersNum; i++) {
@@ -59,8 +61,10 @@ exports.add = async (form, parentId) => {
                         permissions: form.members[i].permissions,
                         familyPassword: parent.record.familyPassword
                     });
+                    await Parent.findByIdAndUpdate(parentId, { $push: { helpers: form.members[i] } });
                     await helper.save();
                 }
+                await Parent.findByIdAndUpdate(parentId, { helpersNo: form.membersNum + parent.record.helpersNo });
             }
         }
         else {
@@ -81,46 +85,57 @@ exports.add = async (form, parentId) => {
 
 exports.create = async (form) => {
 
-    const parent = await this.isExist({ email: form.email });
-    if (!parent.success) {
-        const newParent = new Parent(form);
-        await newParent.save();
-        let sz = newParent.children.length
-        if (sz) {
-            for (let i = 0; i < sz; i++) {
-                var child = new Child({
-                    parent: newParent._id,
-                    familyName: newParent.familyUsername,
-                    email: form.children[i],
-                    familyPassword: newParent.familyPassword
-                });
-                await child.save();
+    try {
+        const parent = await this.isExist({ email: form.email });
+        if (!parent.success) {
+            const newParent = new Parent(form);
+            await newParent.save();
+            let sz = newParent.children.length
+            if (sz) {
+                for (let i = 0; i < sz; i++) {
+                    var child = new Child({
+                        parent: newParent._id,
+                        familyUserName: newParent.familyUserName,
+                        email: form.children[i],
+                        familyEmail: newParent.email,
+                        familyPassword: newParent.familyPassword
+                    });
+                    await child.save();
+                }
             }
-        }
-        let helperSz = newParent.helpers.length
-        if (helperSz) {
-            for (let i = 0; i < helperSz; i++) {
-                var helper = new Helper({
-                    parent: newParent._id,
-                    familyName: newParent.familyUsername,
-                    email: newParent.helpers[i].email,
-                    permissions: newParent.helpers[i].permissions,
-                    familyPassword: newParent.familyPassword
-                });
-                await helper.save();
+            let helperSz = newParent.helpers.length
+            if (helperSz) {
+                for (let i = 0; i < helperSz; i++) {
+                    var helper = new Helper({
+                        parent: newParent._id,
+                        familyUserName: newParent.familyUserName,
+                        email: newParent.helpers[i].email,
+                        permissions: newParent.helpers[i].permissions,
+                        familyEmail: newParent.email,
+                        familyPassword: newParent.familyPassword
+                    });
+                    await helper.save();
+                }
             }
+            return {
+                success: true,
+                record: newParent,
+                code: 201
+            };
         }
-        return {
-            success: true,
-            record: newParent,
-            code: 201
-        };
-    }
-    else {
+        else {
+            return {
+                success: false,
+                error: "Parent already exists!",
+                code: 404
+            };
+        }
+    } catch (err) {
+        console.log(`err.message`, err.message);
         return {
             success: false,
-            error: "Parent already exists!",
-            code: 404
+            code: 500,
+            error: "Unexpected Error!"
         };
     }
 

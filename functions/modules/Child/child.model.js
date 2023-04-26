@@ -5,8 +5,9 @@ let parentModel = require('../Parent/parent.model')
 
 let childSchema = mongoose.Schema({
     parent: { type: mongoose.Types.ObjectId, ref: 'parents' },
-    familyName: { type: String, required: true, ref: 'parentModel.familyUsername' },
     email: { type: String, required: true, ref: 'parentModel.children' },
+    familyUserName: { type: String, required: true, ref: 'parentModel.familyUserName' },
+    familyEmail: { type: String, required: true, ref: 'parentModel.familyEmail' },
     familyPassword: { type: String, required: true, ref: 'parentModel.familyPassword' },
     image: { type: String, required: false },
     groups: [

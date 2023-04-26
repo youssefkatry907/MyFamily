@@ -5,8 +5,9 @@ let saltrounds = 5;
 
 let helperSchema = mongoose.Schema({
     parent: { type: mongoose.Types.ObjectId, ref: 'parents' },
-    familyUserName: { type: String, required: true, ref: 'parentModel.familyUsername' },
     email: { type: String, required: true, ref: 'parentModel.helpers.email' },
+    familyUserName: { type: String, required: true, ref: 'parentModel.familyUsername' },
+    familyEmail: { type: String, required: true, ref: 'parentModel.familyEmail' },
     familyPassword: { type: String, required: true, ref: 'parentModel.familyPassword' },
     image: { type: String, required: false },
     groups: [

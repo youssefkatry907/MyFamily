@@ -5,7 +5,7 @@ const checker = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
     try {
-        const newImage = await parent.create(req.body);
+        const result = await parent.create(req.body);
         res.status(result.code).json(result);
     } catch (err) {
         console.log(`err.message`, err.message);
