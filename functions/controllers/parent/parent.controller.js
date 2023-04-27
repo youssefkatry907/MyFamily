@@ -122,10 +122,11 @@ exports.addMember = async (req, res) => {
         if (decodedToken) {
             const form = req.body;
             const result = await parent.add(form, decodedToken._id);
+            // console.log(`result`, result);
             res.status(result.code).json({
                 success: result.success,
                 code: result.code,
-                result
+                message: result.message
             });
         }
     } catch (err) {
