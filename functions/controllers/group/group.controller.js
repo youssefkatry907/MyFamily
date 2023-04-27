@@ -1,4 +1,5 @@
 let group = require('../../modules/Group/group.repo');
+const jwt = require('jsonwebtoken');
 
 exports.listGroups = async (req, res) => {
     try {
@@ -11,6 +12,7 @@ exports.listGroups = async (req, res) => {
             groups: result.groups
         });
     } catch (error) {
+        console.log(`error`, error);
         res.status(500).json({
             success: false,
             error: error
