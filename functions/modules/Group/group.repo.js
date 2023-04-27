@@ -1,9 +1,12 @@
 let Group = require('./group.model');
+const jwt = require('jsonwebtoken');
 
-exports.list = async (filter) => {
+exports.list = async (familyUserName) => {
     try {
-        let groups = await Group.find(filter);
+        let groups = await Group.find({ familyUserName });
         return {
+            success: true,
+            code: 200,
             groups,
         };
     }

@@ -2,7 +2,9 @@ let group = require('../../modules/Group/group.repo');
 
 exports.listGroups = async (req, res) => {
     try {
-        let result = await group.list();
+        let token = req.headers.authorization.split(' ')[1];
+        let parent = jwt.verify(token, "MyFamilyTeam")
+        let result = await group.list(parent.familyUserName);
         res.status(200).json({
             success: true,
             code: 200,
