@@ -169,10 +169,11 @@ exports.update = async (_id, form) => {
                         code: 409
                     };
             }
-            await Parent.findByIdAndUpdate({ _id }, form)
+            let updatedParent = await Parent.findByIdAndUpdate({ _id }, form);
             return {
                 success: true,
-                code: 201
+                code: 201,
+                updatedParent
             };
         }
         else {
@@ -183,6 +184,7 @@ exports.update = async (_id, form) => {
             };
         }
     } catch (err) {
+        console.log(`err.message`, err.message);
         return {
             success: false,
             code: 500,
