@@ -39,32 +39,45 @@ exports.add = async (form, parentId) => {
     try {
         const parent = await this.isExist({ _id: parentId });
         if (parent.success) {
+            console.log(`familyEmail`, parent.record.familyEmail);
             if (form.memberType == "child") {
                 for (let i = 0; i < form.membersNum; i++) {
                     var child = new Child({
                         parent: parentId,
-                        familyUserName: parent.record.familyUserName,
                         email: form.members[i].email,
+                        familyUserName: parent.record.familyUserName,
+                        familyEmail: parent.record.email,
                         familyPassword: parent.record.familyPassword
                     });
                     await Parent.findByIdAndUpdate(parentId, { $push: { children: form.members[i].email } });
                     await child.save();
                 }
                 await Parent.findByIdAndUpdate(parentId, { childrenNo: form.membersNum + parent.record.childrenNo });
+                return {
+                    success: true,
+                    code: 201,
+                    message: "Children added successfully!"
+                }
             }
             else if (form.memberType == "helper") {
                 for (let i = 0; i < form.membersNum; i++) {
                     var helper = new Helper({
                         parent: parentId,
-                        familyUserName: parent.record.familyUserName,
                         email: form.members[i].email,
+                        familyUserName: parent.record.familyUserName,
+                        familyEmail: parent.record.email,
+                        familyPassword: parent.record.familyPassword,
                         permissions: form.members[i].permissions,
-                        familyPassword: parent.record.familyPassword
                     });
                     await Parent.findByIdAndUpdate(parentId, { $push: { helpers: form.members[i] } });
                     await helper.save();
                 }
                 await Parent.findByIdAndUpdate(parentId, { helpersNo: form.membersNum + parent.record.helpersNo });
+            }
+            return {
+                success: true,
+                code: 201,
+                message: "Helpers added successfully!"
             }
         }
         else {
