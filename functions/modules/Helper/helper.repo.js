@@ -30,10 +30,10 @@ exports.isExist = async (filter) => {
 
 }
 
-exports.getAll = async (parentId) => {
+exports.getAll = async (familyUserName) => {
     // get all helpers of a parent with parentId 
     try {
-        const helpers = await Helper.find({ parent: parentId });
+        const helpers = await Helper.find({ familyUserName });
         if (helpers) {
             return {
                 success: true,
