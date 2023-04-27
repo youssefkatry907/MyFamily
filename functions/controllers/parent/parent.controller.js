@@ -122,14 +122,15 @@ exports.addMember = async (req, res) => {
         if (decodedToken) {
             const form = req.body;
             const result = await parent.add(form, decodedToken._id);
-            return res.status(200).json({
-                success: true,
-                code: 200,
+            res.status(result.code).json({
+                success: result.success,
+                code: result.code,
+                result
             });
         }
     } catch (err) {
         console.log(`err.message`, err.message);
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             code: 500,
             error: "Unexpected Error!"

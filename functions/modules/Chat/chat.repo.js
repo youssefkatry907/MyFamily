@@ -38,9 +38,22 @@ exports.get = async (id) => {
     }
 }
 
-exports.list = async (query) => {
-    const records = await Chat.find(query);
-    return records;
+exports.list = async (filter) => {
+    try {
+        const records = await Chat.find(filter).lean();
+        return {
+            success: true,
+            records: records,
+            code: 200,
+        };
+
+    } catch (err) {
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
 }
 
 exports.create = async (form) => {
