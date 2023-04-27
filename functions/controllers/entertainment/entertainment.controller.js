@@ -76,3 +76,28 @@ exports.removeEntertainment = async (req, res) => {
         });
     }
 }
+
+exports.voteSuggestion = async (req, res) => {
+    try {
+        const form = req.body;
+        const entertainment = await entertainmentRepo.vote(form);
+        if (entertainment.success) {
+            return res.status(201).json({
+                success: true,
+                record: entertainment.record
+            });
+        } else {
+            return res.status(entertainment.code).json({
+                success: false,
+                error: entertainment.error
+            });
+        }
+    } catch (err) {
+        console.log(`err.message`, err.message);
+        return res.status(500).json({
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        });
+    }
+}

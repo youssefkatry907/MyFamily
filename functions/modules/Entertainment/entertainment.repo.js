@@ -28,40 +28,39 @@ exports.isExist = async (filter) => {
 
 }
 
-exports.add = async (form, id) => {
+exports.add = async (form, _id) => {
     try {
-        const newEntertainment = new Entertainment(form);
 
         let entertainment = await this.isExist({ title: form.title });
 
-        if (entertainment.success) {
-            for (let i = 0; i < form.suggestions.length; i++) {
-                let suggestion = newEntertainment.suggestions.find(s => s.suggestion == form.suggestions[i].suggestion);
-                suggestion.count++;
+        if (entertainment.success) { // Title exists
+            return {
+                success: false,
+                code: 409,
+                message: "This title already exists!"
             }
         }
         else {
-            newEntertainment.suggestions = form.suggestions;
-        }
-        console.log(`newEntertainment`, newEntertainment);
-        let sum = 0, percentage = 0;
+            const newEntertainment = new Entertainment(form);
+            let sum = 0, percentage = 0;
             for (let i = 0; i < form.suggestions.length; i++) {
                 percentage = newEntertainment.suggestions[i].count;
-                if (!percentage)
-                    newEntertainment.suggestions[i].count++;
+                percentage++;
+                newEntertainment.suggestions[i].count++;
                 sum += percentage;
             }
             for (let i = 0; i < form.suggestions.length; i++) {
                 newEntertainment.suggestions[i].percentage = (newEntertainment.suggestions[i].count / sum) * 100;
             }
-        newEntertainment.parentId = id;
-        await newEntertainment.save();
-        // console.log(`newEntertainment`, newEntertainment);
-        return {
-            success: true,
-            record: newEntertainment,
-            code: 201
-        };
+            newEntertainment.parentId = _id;
+            await newEntertainment.save();
+
+            return {
+                success: true,
+                record: newEntertainment,
+                code: 201
+            };
+        }
     } catch (err) {
         console.log(`err.message`, err.message);
         return {
@@ -74,7 +73,7 @@ exports.add = async (form, id) => {
 }
 
 
-// remove a title of entertainment from array of titles
+
 
 exports.remove = async (_id) => {
     try {
@@ -105,9 +104,9 @@ exports.remove = async (_id) => {
     }
 }
 
-exports.getAll = async (id) => {
+exports.getAll = async (_id) => {
     try {
-        const entertainments = await Entertainment.find({ parentId: id }).lean();
+        const entertainments = await Entertainment.find({ parentId: _id }).lean();
         if (entertainments) {
             return {
                 success: true,
@@ -123,6 +122,44 @@ exports.getAll = async (id) => {
             };
         }
     } catch (err) {
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
+}
+
+exports.vote = async (form) => {
+    try {
+        const entertainment = await Entertainment.findOne({ title: form.title }).lean();
+        if (entertainment) {
+            let suggestion = entertainment.suggestions.find(s => s.suggestion == form.suggestion);
+            suggestion.count++;
+            let sum = 0, percentage = 0;
+            for (let i = 0; i < entertainment.suggestions.length; i++) {
+                percentage = entertainment.suggestions[i].count;
+                sum += percentage;
+            }
+            for (let i = 0; i < entertainment.suggestions.length; i++) {
+                entertainment.suggestions[i].percentage = (entertainment.suggestions[i].count / sum) * 100;
+            }
+            await Entertainment.updateOne({ title: form.title }, entertainment);
+            return {
+                success: true,
+                record: entertainment,
+                code: 201
+            };
+        }
+        else {
+            return {
+                success: false,
+                error: "This entertainment does not exist!",
+                code: 404
+            };
+        }
+    } catch (err) {
+        console.log(`err.message`, err.message);
         return {
             success: false,
             code: 500,
