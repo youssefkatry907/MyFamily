@@ -6,7 +6,7 @@ exports.addEntertainment = async (req, res) => {
         let token = req.headers.authorization.split(' ')[1];
         let parent = jwt.verify(token, "MyFamilyTeam")
         const entertainmentTitle = req.body;
-        const entertainment = await entertainmentRepo.add(entertainmentTitle, parent._id);
+        const entertainment = await entertainmentRepo.add(entertainmentTitle, parent.familyUserName);
         if (entertainment.success) {
             return res.status(201).json({
                 success: true,

@@ -1,16 +1,14 @@
 let Todo = require('./todo.model')
 
 
-exports.getAll = async (id) => {
+exports.getAll = async (familyUserName) => {
     try {
         // return all tasks and populate all children
         const todo = await Todo.find().populate('toDoList.child').lean();
         let sz = todo[0].toDoList.length;
         let todoList = [];
         for (let i = 0; i < sz; i++) {
-            console.log(todo[0].toDoList[i].child.parent, id);
-            console.log(todo[0].toDoList[i].child.parent == id);
-            if (todo[0].toDoList[i].child.parent == id) {
+            if (todo[0].toDoList[i].child.familyUserName == familyUserName) {
                 todoList.push(todo[0].toDoList[i]);
             }
         }
@@ -68,20 +66,17 @@ exports.isExist = async (filter) => {
 
 }
 
-// add task 
+
 
 exports.add = async (form) => {
     try {
-        // console.log('form', form);
         let todo = await this.isExist({ "toDoList.child": form.child });
-        console.log('filter', todo);
         if (todo.code == 500) return {
             success: false,
             code: 500,
             error: "Unexpected Error!"
         };
         if (todo.success) {
-            console.log(todo.record);
             let newTodo = todo.record.toDoList;
             for (let i = 0; i < newTodo.length; i++) {
                 if (newTodo[i].child == form.child) {
@@ -101,9 +96,7 @@ exports.add = async (form) => {
                     return { task: tsk.task, done: tsk.done ?? false }
                 })
             }
-            console.log(newTodo, newTodo);
             let result = await Todo.updateOne({}, { $push: { "toDoList": newTodo } }, { upsert: true, new: true });
-            console.log(newTodo, newTodo);
             return {
                 success: true,
                 code: 200

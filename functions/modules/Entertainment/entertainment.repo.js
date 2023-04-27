@@ -28,10 +28,10 @@ exports.isExist = async (filter) => {
 
 }
 
-exports.add = async (form, _id) => {
+exports.add = async (form, familyUserName) => {
     try {
 
-        let entertainment = await this.isExist({ title: form.title });
+        let entertainment = await this.isExist({ title: form.title, familyUserName });
 
         if (entertainment.success) { // Title exists
             return {
@@ -52,7 +52,7 @@ exports.add = async (form, _id) => {
             for (let i = 0; i < form.suggestions.length; i++) {
                 newEntertainment.suggestions[i].percentage = (newEntertainment.suggestions[i].count / sum) * 100;
             }
-            newEntertainment.parentId = _id;
+            newEntertainment.familyUserName = familyUserName;
             await newEntertainment.save();
 
             return {
