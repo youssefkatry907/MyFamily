@@ -1,8 +1,10 @@
 let mongoose = require('mongoose');
 
+
 let groupSchema = mongoose.Schema({
     parent1: { type: mongoose.Types.ObjectId, ref: 'parents' },
     parent2: { type: mongoose.Types.ObjectId, ref: 'parents', required: false },
+    familyUserName: { type: String, ref: 'parents' },
     groupName: { type: String, required: true },
     groupImage: { type: String },
     groupDescription: { type: String },
