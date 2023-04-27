@@ -104,9 +104,9 @@ exports.remove = async (_id) => {
     }
 }
 
-exports.getAll = async (_id) => {
+exports.getAll = async (familyUserName) => {
     try {
-        const entertainments = await Entertainment.find({ parentId: _id }).lean();
+        const entertainments = await Entertainment.find({ familyUserName }).lean();
         if (entertainments) {
             return {
                 success: true,

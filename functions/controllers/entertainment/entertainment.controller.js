@@ -31,7 +31,7 @@ exports.getAllEntertainment = async (req, res) => {
     try {
         let token = req.headers.authorization.split(' ')[1];
         let parent = jwt.verify(token, "MyFamilyTeam")
-        const entertainment = await entertainmentRepo.getAll(parent._id);
+        const entertainment = await entertainmentRepo.getAll(parent.familyUserName);
         if (entertainment.success) {
             return res.status(200).json({
                 success: true,
