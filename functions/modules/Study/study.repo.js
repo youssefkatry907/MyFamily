@@ -75,18 +75,18 @@ exports.add = async (form) => {
 }
 
 
-exports.get = async (id) => {
+exports.get = async (familyUserName) => {
     try {
         // return all studies with parent id and populate all children
         let study = await Study.find().populate('study.child').lean();
         let sz = study[0].study.length;
         let studies = [];
         for (let i = 0; i < sz; i++) {
-            if (study[0].study[i].child.parent == id) {
+            if (study[0].study[i].child.familyUserName == familyUserName) {
                 studies.push(study[0].study[i]);
             }
         }
-        
+
         if (studies.length > 0) {
             return {
                 success: true,

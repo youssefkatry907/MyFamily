@@ -5,6 +5,7 @@ let studySchema = mongoose.Schema({
         {
             parent: { type: mongoose.Types.ObjectId, ref: 'parents' },
             child: { type: mongoose.Types.ObjectId, ref: 'childrens' },
+            familyUserName: { type: String, ref: 'parents' },
             subjects: [
                 {
                     subject: { type: String },

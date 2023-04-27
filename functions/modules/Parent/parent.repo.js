@@ -75,6 +75,7 @@ exports.add = async (form, parentId) => {
             };
         }
     } catch (err) {
+        console.log(`err.message`, err.message);
         return {
             success: false,
             code: 500,
