@@ -67,7 +67,8 @@ exports.updateProfile = async (req, res) => {
         const result = await parent.update(decodedToken._id, req.body);
         res.status(result.code).json({
             success: result.success,
-            code: result.code
+            code: result.code,
+            record: result.updatedParent
         });
     } catch (err) {
         console.log(`err.message`, err.message);
