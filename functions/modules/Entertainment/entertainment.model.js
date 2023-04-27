@@ -1,4 +1,5 @@
 let mongoose = require('mongoose')
+// let parentModel = require('../Parents/parents.model')
 
 let entertainmentSchema = mongoose.Schema({
     title: { type: String },
@@ -11,10 +12,7 @@ let entertainmentSchema = mongoose.Schema({
     ],
     // 2, 3, 1, sum = 6
     // 2/6 = 33.33, 3/6 = 50, 1/6 = 16.66
-    parentId: {
-        type: mongoose.Types.ObjectId,
-        ref: 'parents'
-    },
+    familyUserName: { type: String, ref: 'parents' },
     helperId: {
         type: mongoose.Types.ObjectId,
         ref: 'helpers'
