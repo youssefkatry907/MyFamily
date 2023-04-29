@@ -1,5 +1,4 @@
 let Helper = require('./helper.model')
-let Parent = require('../Parent/parent.model')
 let bcrypt = require("bcrypt");
 
 exports.isExist = async (filter) => {
@@ -51,10 +50,9 @@ exports.getAll = async (familyUserName) => {
     }
 }
 
-exports.comparePassword = async (familyEmail, password) => {
+exports.comparePassword = async (email, password) => {
     try {
-        let helper = await this.isExist({ familyEmail })
-        let otherParent = await Parent.findOne({ otherParentEmail: familyEmail })
+        let helper = await this.isExist({ email })
         if (helper.success) {
             match = await bcrypt.compare(password, helper.record.familyPassword)
             if (match) {
@@ -73,30 +71,37 @@ exports.comparePassword = async (familyEmail, password) => {
             }
 
         }
-        else if (otherParent.success) {
-            match2 = await bcrypt.compare(password, otherParent.record.familyPassword)
-            if (match2) {
-                return {
-                    success: true,
-                    record: otherParent.record,
-                    code: 200
-                };
-            }
-            else {
-                return {
-                    success: false,
-                    code: 409,
-                    error: "Incorrect Password"
-                };
-            }
-        } else
+        else
             return {
                 success: false,
                 code: 404,
-                error: helper.error || otherParent.error
+                error: helper.error
             };
     } catch (err) {
         console.log(`err.message`, err.message);
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
+}
+
+exports.logout = async (_id) => {
+    try {
+        let helper = await this.isExist({ _id })
+        if (helper.success) {
+            await Helper.findOneAndUpdate({ _id }, { token: null })
+            return {
+                success: true,
+                code: 200
+            };
+        } else return {
+            success: false,
+            code: 404,
+            error: helper.error
+        };
+    } catch (err) {
         return {
             success: false,
             code: 500,

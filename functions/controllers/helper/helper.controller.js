@@ -1,5 +1,5 @@
 let helper = require('../../modules/Helper/helper.repo');
-const jwt = require('jsonwebtoken');
+const jwt = require('../../helpers/jwt.helper');
 const checker = require('../../helpers/jwt.helper');
 
 exports.getHelpers = async (req, res) => {
@@ -41,6 +41,20 @@ exports.login = async (req, res) => {
         else {
             res.status(result.code).json(result)
         }
+    } catch (err) {
+        console.log(`HELPER LOGIN @ controller: `, err.message);
+        res.status(500).json({
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        });
+    }
+}
+
+exports.logout = async (req, res) => {
+    try {
+        const result = await helper.logout(req.body._id);
+        res.status(result.code).json(result);
     } catch (err) {
         console.log(`err.message`, err.message);
         res.status(500).json({
