@@ -1,7 +1,7 @@
 const parent = require('../../modules/Parent/parent.repo');
 const jwt = require('../../helpers/jwt.helper');
-const uploader = require('../../helpers/uploader.helper');
 const checker = require('jsonwebtoken');
+const uploader = require('../../helpers/uploader.helper');
 
 exports.register = async (req, res) => {
     try {
