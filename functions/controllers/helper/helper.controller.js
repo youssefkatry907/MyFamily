@@ -1,12 +1,12 @@
 let helper = require('../../modules/Helper/helper.repo');
 const jwt = require('../../helpers/jwt.helper');
-const checker = require('../../helpers/jwt.helper');
+const checker = require('jsonwebtoken');
 
 exports.getHelpers = async (req, res) => {
     // get all helpers of a parent using parentToken
     try {
         const parentToken = req.headers.authorization.split(' ')[1];
-        let decodedToken = jwt.verify(parentToken, "MyFamilyTeam");
+        let decodedToken = checker.verify(parentToken, "MyFamilyTeam");
         if (decodedToken) {
             const result = await helper.getAll(decodedToken.familyUserName);
             return res.status(200).json({
@@ -53,7 +53,9 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-        const result = await helper.logout(req.body._id);
+        const token = req.headers.authorization.split(' ')[1];
+        let decodedToken = checker.verify(token, "MyFamilyTeam");
+        const result = await helper.logout(decodedToken._id);
         res.status(result.code).json(result);
     } catch (err) {
         console.log(`err.message`, err.message);

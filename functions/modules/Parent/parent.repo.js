@@ -300,14 +300,24 @@ exports.logout = async (_id) => {
     }
 }
 
-exports.resetPassword = async (id, newPassword) => {
+exports.resetPassword = async (_id, newPassword) => {
     try {
-        let parent = await this.isExist({ _id: id })
+        let parent = await this.isExist({ _id })
         let saltrouds = 5;
         if (parent.success) {
+            let helpersNum = parent.record.helpers.length
+            let childrenNum = parent.record.children.length
             let hashedPassword = await bcrypt.hash(newPassword, saltrouds)
-            await Parent.findByIdAndUpdate({ _id: id }, { password: hashedPassword })
-            await Parent.findByIdAndUpdate({ _id: id }, { familyPassword: hashedPassword })
+            await Parent.findByIdAndUpdate({ _id }, { password: hashedPassword })
+            await Parent.findByIdAndUpdate({ _id }, { familyPassword: hashedPassword })
+            for (let i = 0; i < helpersNum; i++) {
+                let helper = parent.record.helpers[i]
+                await Helper.findOneAndUpdate({ email: helper.email }, { familyPassword: hashedPassword })
+            }
+            for (let i = 0; i < childrenNum; i++) {
+                let child = parent.record.children[i]
+                await Child.findOneAndUpdate({ email: child }, { familyPassword: hashedPassword })
+            }
             return {
                 success: true,
                 code: 200
