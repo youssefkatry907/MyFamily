@@ -305,19 +305,16 @@ exports.resetPassword = async (_id, newPassword) => {
         let parent = await this.isExist({ _id })
         let saltrouds = 5;
         if (parent.success) {
-            let helpersNum = parent.record.helpers.length
-            let childrenNum = parent.record.children.length
-            let hashedPassword = await bcrypt.hash(newPassword, saltrouds)
-            await Parent.findByIdAndUpdate({ _id }, { password: hashedPassword })
-            await Parent.findByIdAndUpdate({ _id }, { familyPassword: hashedPassword })
-            for (let i = 0; i < helpersNum; i++) {
-                let helper = parent.record.helpers[i]
-                await Helper.findOneAndUpdate({ email: helper.email }, { familyPassword: hashedPassword })
-            }
-            for (let i = 0; i < childrenNum; i++) {
-                let child = parent.record.children[i]
-                await Child.findOneAndUpdate({ email: child }, { familyPassword: hashedPassword })
-            }
+            const helpers = await Helper.find({ familyUserName: parent.record.familyUserName })
+            const children = await Child.find({ familyUserName: parent.record.familyUserName })
+            const hashedPassword = await bcrypt.hash(newPassword, saltrouds)
+
+            await Parent.findByIdAndUpdate(_id, { password: hashedPassword, familyPassword: hashedPassword })
+
+            const updateHelpers = helpers.map(helper => Helper.findByIdAndUpdate(helper._id, { familyPassword: hashedPassword }))
+            const updateChildren = children.map(child => Child.findByIdAndUpdate(child._id, { familyPassword: hashedPassword }))
+            await Promise.all([...updateHelpers, ...updateChildren])
+
             return {
                 success: true,
                 code: 200

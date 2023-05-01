@@ -29,7 +29,7 @@ exports.getHelpers = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { familyUserName, familyEmail, familyPassword } = req.body;
-        const result = await helper.comparePassword(familyEmail, familyPassword);
+        const result = await helper.comparePassword(familyEmail, familyPassword, familyUserName);
         if (result.success) {
             payload = {
                 _id: result.record._id, email: result.record.email,
