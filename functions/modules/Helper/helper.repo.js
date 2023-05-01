@@ -50,9 +50,9 @@ exports.getAll = async (familyUserName) => {
     }
 }
 
-exports.comparePassword = async (email, password) => {
+exports.comparePassword = async (email, password, familyUserName) => {
     try {
-        let helper = await this.isExist({ email })
+        let helper = await this.isExist({ email, familyUserName })
         if (helper.success) {
             match = await bcrypt.compare(password, helper.record.familyPassword)
             if (match) {
