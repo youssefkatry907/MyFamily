@@ -1,7 +1,22 @@
 const parent = require('../../modules/Parent/parent.repo');
 const jwt = require('../../helpers/jwt.helper');
 const checker = require('jsonwebtoken');
-const uploader = require('../../helpers/uploader.helper');
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, `uploads/${folderName}`)
+    },
+    filename: function (req, file, cb) {
+      // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      console.log(`file`, file);
+      cb(null, Date.now() + '-' + path.extname(file.originalname))
+    }
+  })
+
+  var upload = multer({ storage: storage });
+  //console.log(upload);
 
 exports.register = async (req, res) => {
     try {
@@ -142,13 +157,13 @@ exports.addMember = async (req, res) => {
 
 exports.uploadImage = async (req, res) => {
     try {
-        //console.log(`req.body`);
         const token = req.headers.authorization.split(' ')[1];
         let decodedToken = checker.verify(token, "MyFamilyTeam");
         if (decodedToken) {
-            const newImage = await uploader.uploadImage("parents");
-            // console.log(`newImage`, newImage);
-            let update = await parent.update(decodedToken._id, { image: newImage });
+            const newImage = upload("parents");
+            console.log(newImage.storage);
+            let update = await parent.update(decodedToken._id, { image: newImage.storage });
+            //console.log(`update`, update.image);
             res.status(update.code).json({
                 success: update.success,
                 code: update.code,

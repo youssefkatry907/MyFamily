@@ -1,4 +1,5 @@
 let Study = require('./study.model')
+let Child = require('../Child/child.model')
 
 exports.isExist = async (filter) => {
     try {
@@ -55,12 +56,12 @@ exports.add = async (form) => {
                 })
             }
             console.log(newsubject, newsubject);
-            let result = await Study.updateOne({}, { $push: { "study": newsubject } }, { upsert: true, new: true });
+            await Study.updateOne({}, { $push: { "study": newsubject } }, { upsert: true, new: true });
             console.log(newsubject, newsubject);
             return {
                 success: true,
                 message: "Study Added Successfully",
-                code: 200
+                code: 200,
             };
         }
     } catch (err) {
@@ -108,4 +109,61 @@ exports.get = async (familyUserName) => {
             error: "Unexpected Error!"
         };
     }
+}
+
+exports.addAssignment = async (form, childId, idx) => {
+    try {
+        const result = await Study.findOne({ 'study.child': childId })
+        if (result) {
+            const childIndex = result.study.findIndex((s) => String(s.child) === childId);
+            result.study[childIndex].subjects[idx].Assignments.push(form);
+            await result.save();
+            return {
+                success: true,
+                code: 201,
+                message: "Assignment Added Successfully"
+            };
+        } else {
+            return {
+                success: false,
+                code: 404,
+                error: "Assignment is not found!"
+            };
+        }
+    } catch (err) {
+        console.log(err.message);
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
+}
+
+exports.listSubjects = async (childId) => {
+    try {
+        let result = await this.isExist({ "study.child": childId });
+        if (result.success) {
+            return {
+                success: true,
+                code: 200,
+                subjects: result.record.study[0].subjects
+            };
+        } else {
+            return {
+                success: false,
+                code: 404,
+                error: "Subjects is not found!"
+            };
+        }
+
+    } catch (err) {
+        console.log(err.message);
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
+
 }
