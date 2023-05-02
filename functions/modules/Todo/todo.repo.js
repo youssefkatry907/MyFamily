@@ -13,7 +13,7 @@ exports.getAll = async (familyUserName) => {
             }
         }
         console.log(todoList.length);
-        
+
         if (todoList.length > 0) {
             console.log(todoList.length);
             return {
@@ -100,6 +100,76 @@ exports.add = async (form) => {
             return {
                 success: true,
                 code: 200
+            };
+        }
+    } catch (err) {
+        console.log(err.message, err.message);
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
+}
+
+exports.listTasks = async (childId) => {
+    try {
+        let todo = await this.isExist({ "toDoList.child": childId });
+        if (todo.success) {
+            return {
+                success: true,
+                code: 200,
+                tasks: todo.record.toDoList[0].tasks
+            }
+        }
+        else {
+            return {
+                success: false,
+                code: 404,
+                error: "todo is not found!"
+            };
+        }
+    } catch (err) {
+        console.log(err.message, err.message);
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
+}
+
+exports.updateTask = async (childId, form) => {
+    try {
+        let todo = await Todo.findOne({ "toDoList.child": childId });
+        if (todo) {
+            let taskId = form._id;
+            // find the task with the given id and update it
+            let updatedTask = todo.toDoList[0].tasks.find(tsk => tsk._id == taskId);
+            if (updatedTask) {
+                updatedTask.done = form.done;
+                //console.log(updatedTask);
+                await todo.save();
+                return {
+                    success: true,
+                    code: 201,
+                    message: "task updated successfully!"
+                }
+            }
+            else {
+                return {
+                    success: false,
+                    code: 404,
+                    error: "task is not found!"
+                };
+            }
+
+        }
+        else {
+            return {
+                success: false,
+                code: 404,
+                error: "todo is not found!"
             };
         }
     } catch (err) {
