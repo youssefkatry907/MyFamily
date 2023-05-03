@@ -6,7 +6,7 @@ const { handleFileUploadErrors } = require('../helpers/uploader.helper')
 require('dotenv').config()
 
 databaseConnection();
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 
 app.use(express.json());
 app.use(routes);

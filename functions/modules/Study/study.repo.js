@@ -1,4 +1,5 @@
 let Study = require('./study.model')
+let Notification = require('../Notification/notification.model')
 let Child = require('../Child/child.model')
 
 exports.isExist = async (filter) => {
@@ -114,14 +115,26 @@ exports.get = async (familyUserName) => {
 exports.addAssignment = async (form, childId, idx) => {
     try {
         const result = await Study.findOne({ 'study.child': childId })
+        let child = await Child.findById(childId)
+        let email = child.email;
+        let atIndex = email.indexOf("@");
+        let childName = email.substring(0, atIndex).trim();
         if (result) {
             const childIndex = result.study.findIndex((s) => String(s.child) === childId);
             result.study[childIndex].subjects[idx].Assignments.push(form);
             await result.save();
+            let msg = childName + " " + child.familyUserName + " Added new assignment"
+            let newNotification = new Notification({
+                text: msg,
+                type: "Study",
+                date: Date.now(),
+            })
+            await newNotification.save();
             return {
                 success: true,
                 code: 201,
-                message: "Assignment Added Successfully"
+                message: "Assignment Added Successfully",
+                notification: newNotification
             };
         } else {
             return {

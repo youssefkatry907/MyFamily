@@ -9,11 +9,11 @@ exports.uploadImage = (folderName) => {
     filename: function (req, file, cb) {
       // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
       console.log(`file`, file);
-      cb(null, Date.now() + '-' + path.extname(file.originalname))
+      cb(null, Date.now() + '-' + file.originalname)
     }
   })
 
-  const upload = multer({ storage: storage });
+  //const upload = multer({ storage: storage });
 
   // var upload = multer({
   //     storage: storage,
@@ -34,7 +34,7 @@ exports.uploadImage = (folderName) => {
   // });
 
 
-  return upload;
+  return multer({ storage: storage });
 
 }
 

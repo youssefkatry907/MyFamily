@@ -1,4 +1,6 @@
 let Todo = require('./todo.model')
+let Notification = require('../Notification/notification.model')
+let Child = require('../Child/child.model')
 
 
 exports.getAll = async (familyUserName) => {
@@ -148,12 +150,25 @@ exports.updateTask = async (childId, form) => {
             let updatedTask = todo.toDoList[0].tasks.find(tsk => tsk._id == taskId);
             if (updatedTask) {
                 updatedTask.done = form.done;
-                //console.log(updatedTask);
                 await todo.save();
+
+                let child = await Child.findById(childId)
+                let email = child.email;
+                let atIndex = email.indexOf("@");
+                let childName = email.substring(0, atIndex).trim();
+
+                let msg = childName + " " + child.familyUserName + " has completed a task!";
+                let newNotification = new Notification({
+                    text: msg,
+                    type: "todo",
+                    date: Date.now()
+                })
+                await newNotification.save();
                 return {
                     success: true,
                     code: 201,
-                    message: "task updated successfully!"
+                    message: "task updated successfully!",
+                    notification: newNotification
                 }
             }
             else {
