@@ -13,6 +13,6 @@ app.put("/changePassword", validator(resetPasswordValidation), parentController.
 app.put("/logout", parentController.logout);
 app.delete("/remove", parentController.deleteParent);
 app.post("/addMember", parentController.addMember);
-app.post("/image", upload.single('image'), parentController.uploadImage)
+app.post("/image", upload.array('image', 1), parentController.uploadImage)
 
 module.exports = app  

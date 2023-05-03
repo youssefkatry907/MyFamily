@@ -58,7 +58,7 @@ exports.listMessages = async (req, res) => {
 
 exports.sendMessage = async (req, res) => {
     try {
-        const receiver = await child.isExist(req.body.receiver);
+        const receiver = await child.isExist({_id: req.body.receiver});
         if (receiver.success) {
             const msg = {
                 sender: req.body.sender,
@@ -116,20 +116,3 @@ exports.deleteMessage = async (req, res) => {
         });
     }
 }
-
-// exports.listChats = async (req, res) => {
-//     try {
-//         const user = await child.isExist();
-        
-//         } else {
-//             return res.json(404).send("user not found");
-//         }
-//     } catch (err) {
-//         console.log(err.message, err.message);
-//         return res.status(500).json({
-//             success: false,
-//             code: 500,
-//             error: "Unexpected Error!"
-//         });
-//     }
-// }
