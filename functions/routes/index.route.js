@@ -9,6 +9,7 @@ let helperRoutes = require("./helper/helper.route");
 let chatRoutes = require("./chat/chat.route");
 let groupRoutes = require("./group/group.route");
 let eventRoutes = require("./event/event.route");
+let parentNotificationRoutes = require("./parent/notification.route");
 
 app.get("/", (req, res) => {
     res.status(200).json({ success: true, message: "Welcome to myFamily Server!", code: 200 })
@@ -23,6 +24,7 @@ app.use("/api/v1/helper", helperRoutes);
 app.use("/api/v1/chat", chatRoutes);
 app.use("/api/v1/group", groupRoutes);
 app.use("/api/v1/event", eventRoutes);
+app.use("/api/v1/notification", parentNotificationRoutes);
 
 
 

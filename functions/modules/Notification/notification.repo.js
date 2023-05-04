@@ -20,9 +20,9 @@ exports.create = async (form) => {
     }
 }
 
-exports.list = async () => {
+exports.list = async (filter) => {
     try {
-        let notifications = await Notification.find().lean()
+        let notifications = await Notification.find(filter).lean()
         return {
             success: true,
             code: 200,

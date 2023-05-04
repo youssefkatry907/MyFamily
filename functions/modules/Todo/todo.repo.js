@@ -160,7 +160,7 @@ exports.updateTask = async (childId, form) => {
                 let msg = childName + " " + child.familyUserName + " has completed a task!";
                 let newNotification = new Notification({
                     text: msg,
-                    type: "todo",
+                    type: "Child",
                     date: Date.now()
                 })
                 await newNotification.save();
