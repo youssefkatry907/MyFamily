@@ -6,11 +6,11 @@ let todoRoutes = require("./todo/todo.route");
 let childRoutes = require("./child/index.route");
 let helperRoutes = require("./helper/index.route");
 let studyRoutes = require("./study/study.route");
-let groupRoutes = require("./group/group.route");
 let eventRoutes = require("./event/event.route");
 
 let parentNotificationRoutes = require("./parent/notification.route");
 let parentChatRoutes = require("./parent/chat.route");
+let parentGroupRoutes = require("./parent/group.route");
 
 app.get("/", (req, res) => {
     res.status(200).json({ success: true, message: "Welcome to myFamily Server!", code: 200 })
@@ -22,11 +22,11 @@ app.use("/api/v1/todo", todoRoutes);
 app.use("/api/v1/child", childRoutes);
 app.use("/api/v1/helper", helperRoutes);
 app.use("/api/v1/study", studyRoutes);
-app.use("/api/v1/group", groupRoutes);
 app.use("/api/v1/event", eventRoutes);
 
 app.use("/api/v1/notification", parentNotificationRoutes);
 app.use("/api/v1/chat", parentChatRoutes);
+app.use("/api/v1/group", parentGroupRoutes);
 
 
 
