@@ -80,20 +80,22 @@ exports.removeEntertainment = async (req, res) => {
 
 exports.voteSuggestion = async (req, res) => {
     try {
+        let token = req.headers.authorization.split(' ')[1];
+        let user = jwt.verify(token, "MyFamilyTeam");
         const form = req.body;
         const entertainment = await entertainmentRepo.vote(form);
         if (entertainment.success) {
-            let msg = entertainment.record.familyUserName + " Voted on " + form.suggestion;
+            let msg = "Someone Voted for " + form.suggestion + " in " + form.title + " entertainment";
             let newNotification = new Notification({
                 text: msg,
-                type: "Entertainment",
+                type: "Child",
                 date: Date.now(),
+                userId: user._id
             });
             await newNotification.save();
             res.status(201).json({
                 success: true,
                 record: entertainment.record,
-                notification: newNotification
             });
         } else {
             res.status(entertainment.code).json({

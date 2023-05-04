@@ -126,15 +126,15 @@ exports.addAssignment = async (form, childId, idx) => {
             let msg = childName + " " + child.familyUserName + " Added new assignment"
             let newNotification = new Notification({
                 text: msg,
-                type: "Study",
+                type: "Child",
                 date: Date.now(),
+                userId: childId
             })
             await newNotification.save();
             return {
                 success: true,
                 code: 201,
                 message: "Assignment Added Successfully",
-                notification: newNotification
             };
         } else {
             return {
