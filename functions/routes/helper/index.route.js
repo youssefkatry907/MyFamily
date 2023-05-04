@@ -7,8 +7,10 @@ const allowedRoles = ['parent'];
 
 const helperRoutes = require('./helper.route');
 const notificationRoutes = require('./notification.route');
+const chatRoutes = require('./chat.route');
 
-app.use('/helper', checkToken(allowedRoles), helperRoutes);
-app.use('/notification', checkToken(allowedRoles), notificationRoutes);
+app.use(helperRoutes);
+app.use('/notification', notificationRoutes);
+app.use('/chat', chatRoutes);
 
 module.exports = app;

@@ -1,6 +1,7 @@
 let chat = require('../../modules/Chat/chat.repo');
 const checker = require('jsonwebtoken');
 
+
 exports.listChat = async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
@@ -34,11 +35,11 @@ exports.listChat = async (req, res) => {
 exports.listMessages = async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
-        let child = checker.verify(token, "MyFamilyTeam");
+        let helper = checker.verify(token, "MyFamilyTeam");
         let chatId = req.query.chat;
         const chatFound = await chat.isExist(chatId);
         if (chatFound.success) {
-            const messages = await chat.list({ $or: [{ sender: child._id }, { receiver: child._id }] });
+            const messages = await chat.list({ $or: [{ sender: helper._id }, { receiver: helper._id }] });
             res.status(chatFound.code).json({
                 success: true,
                 code: 200,

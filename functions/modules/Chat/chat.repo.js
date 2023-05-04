@@ -1,40 +1,30 @@
 let Chat = require('../Chat/chat.model')
 
-exports.isExist = async (id) => {
-    const record = await Chat.findOne({ _id: id });
+exports.isExist = async (_id) => {
+    const record = await Chat.findOne({ _id });
     if (record) {
         return {
             success: true,
-            record: record,
             code: 200,
+            Chat: record
         };
     } else {
         return {
             code: 404,
             success: false,
-            errors: [
-                {
-                    key: "record",
-                    value: `record not found`,
-                },
-            ],
-        };
+            error: "Chat not found!",
+        }
     }
 }
 
-exports.get = async (id) => {
-    if (id) return await this.isExist(id);
+exports.get = async (_id) => {
+    if (_id) return await this.isExist(_id);
     else {
         return {
             success: false,
             code: 400,
-            errors: [
-                {
-                    key: "id",
-                    value: `id is missed`,
-                },
-            ],
-        };
+            errors: "Id is required!"
+        }
     }
 }
 
@@ -42,9 +32,7 @@ exports.list = async (filter) => {
     try {
         const records = await Chat.find(filter).lean();
         return {
-            success: true,
-            records: records,
-            code: 200,
+            records,
         };
 
     } catch (err) {

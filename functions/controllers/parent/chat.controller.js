@@ -1,54 +1,62 @@
 let chat = require("../../modules/Chat/chat.repo")
 let child = require("../../modules/Child/child.repo")
+let checker = require("jsonwebtoken")
 
 
-exports.getChat = async (req, res) => {
+exports.listChat = async (req, res) => {
     try {
-        // get chat by id
-        const chatId = req.body.chatId;
-        const record = await chat.get(chatId);
-        if (record.success) {
-            return res.status(200).json({
-                success: true,
-                code: 200,
-                record: record.record
-            });
+        const token = req.headers.authorization.split(' ')[1];
+        let decodedToken = checker.verify(token, "MyFamilyTeam");
+        const result = await chat.list({ $or: [{ sender: decodedToken._id }, { receiver: decodedToken._id }] });
+        if (result.success) {
+            res.status(result.code).json({
+                success: result.success,
+                code: result.code,
+                records: result.records
+            })
         }
         else {
-            return res.status(404).json({
+            res.status(404).json({
                 success: false,
                 code: 404,
-                error: "chat not found"
-            });
+                error: "This user doesn't have any chat!"
+            })
         }
-    }
-    catch (err) {
-        console.log(err.message, err.message);
-        return res.status(500).json({
+    } catch (err) {
+        console.log(`err.message`, err.message);
+        res.status(500).json({
             success: false,
             code: 500,
             error: "Unexpected Error!"
         });
     }
+
 }
 
 
 exports.listMessages = async (req, res) => {
     try {
-        const receiver = await child.isExist(req.receiver.body);
-        if (receiver.success) {
-            const messages = await chat.list({ receiver: receiver.record._id });
-            return res.status(200).json({
+        const token = req.headers.authorization.split(' ')[1];
+        let parent = checker.verify(token, "MyFamilyTeam");
+        let chatId = req.query.chat;
+        const chatFound = await chat.isExist(chatId);
+        if (chatFound.success) {
+            const messages = await chat.list({ $or: [{ sender: parent._id }, { receiver: parent._id }] });
+            res.status(chatFound.code).json({
                 success: true,
-                messages,
                 code: 200,
+                messages: messages.records
             });
         } else {
-            return res.json(404).send("user not found");
+            res.status(chatFound.code).json({
+                success: false,
+                code: chatFound.code,
+                error: chatFound.error
+            });
         }
     } catch (err) {
         console.log(err.message, err.message);
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             code: 500,
             error: "Unexpected Error!"
@@ -58,7 +66,7 @@ exports.listMessages = async (req, res) => {
 
 exports.sendMessage = async (req, res) => {
     try {
-        const receiver = await child.isExist({_id: req.body.receiver});
+        const receiver = await child.isExist({ _id: req.body.receiver });
         if (receiver.success) {
             const msg = {
                 sender: req.body.sender,
