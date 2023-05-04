@@ -16,3 +16,18 @@ exports.listNotifications = async (req, res) => {
         });
     }
 }
+
+exports.forwardNotification = async (req, res) => {
+    try {
+        let token = req.headers.authorization.split(' ')[1];
+        let parent = checker.verify(token, "MyFamilyTeam");
+        let result = await notification.forward(parent._id, req.body.notificationId);
+        res.status(result.code).json(result);
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        });
+    }
+}

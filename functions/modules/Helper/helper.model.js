@@ -13,6 +13,9 @@ let helperSchema = mongoose.Schema({
     groups: [
         { type: mongoose.Types.ObjectId, ref: 'groups' }
     ],
+    notifications: [
+        { type: Object, ref: 'notifications' }
+    ],
     // call the helpers permissions from parent model
     permissions: { type: Array, ref: 'parentModel.helpers.permissions' }
 
