@@ -13,6 +13,7 @@ let childSchema = mongoose.Schema({
     groups: [
         { type: mongoose.Types.ObjectId, ref: 'groups' }
     ],
+    role: { type: String, default: "child" },
     // familyId
 })
 
