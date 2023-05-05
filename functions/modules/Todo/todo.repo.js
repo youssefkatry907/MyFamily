@@ -162,7 +162,7 @@ exports.updateTask = async (childId, form) => {
 
                     let newNotification = new Notification({
                         text: msg,
-                        type: "Child",
+                        type: user.role,
                         date: Date.now(),
                         userId: user.parent
                     });
