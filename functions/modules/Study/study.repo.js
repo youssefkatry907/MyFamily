@@ -127,7 +127,7 @@ exports.addAssignment = async (form, childId, idx) => {
             if (user.role == "child" || user.role == "helper") {
                 let newNotification = new Notification({
                     text: msg,
-                    type: "Child",
+                    type: user.role,
                     date: Date.now(),
                     userId: user.parent
                 });

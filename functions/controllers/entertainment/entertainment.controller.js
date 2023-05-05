@@ -91,7 +91,7 @@ exports.voteSuggestion = async (req, res) => {
 
                 let newNotification = new Notification({
                     text: msg,
-                    type: "Child",
+                    type: user.role,
                     date: Date.now(),
                     userId: user.parent
                 });
@@ -100,7 +100,7 @@ exports.voteSuggestion = async (req, res) => {
             else {
                 let newNotification = new Notification({
                     text: msg,
-                    type: "Child",
+                    type: user.role,
                     date: Date.now(),
                 });
                 await newNotification.save();
