@@ -123,7 +123,7 @@ exports.addAssignment = async (form, childId, idx) => {
             const childIndex = result.study.findIndex((s) => String(s.child) === childId);
             result.study[childIndex].subjects[idx].Assignments.push(form);
             await result.save();
-            let msg = childName + " " + child.familyUserName + " Added new assignment"
+            let msg = childName + " Added new assignment"
             let newNotification = new Notification({
                 text: msg,
                 type: "Child",
