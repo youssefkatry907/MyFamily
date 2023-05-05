@@ -1,6 +1,7 @@
 let entertainmentRepo = require('../../modules/Entertainment/entertainment.repo');
 let Notification = require('../../modules/Notification/notification.model');
 const jwt = require('jsonwebtoken');
+const { use } = require('../../routes/entertainment/entertainment.route');
 
 exports.addEntertainment = async (req, res) => {
     try {
@@ -86,13 +87,24 @@ exports.voteSuggestion = async (req, res) => {
         const entertainment = await entertainmentRepo.vote(form);
         if (entertainment.success) {
             let msg = "Someone Voted for " + form.suggestion + " in " + form.title + " entertainment";
-            let newNotification = new Notification({
-                text: msg,
-                type: "Child",
-                date: Date.now(),
-                userId: user._id
-            });
-            await newNotification.save();
+            if (user.role != "parent") {
+
+                let newNotification = new Notification({
+                    text: msg,
+                    type: "Child",
+                    date: Date.now(),
+                    userId: user.parent
+                });
+                await newNotification.save();
+            }
+            else {
+                let newNotification = new Notification({
+                    text: msg,
+                    type: "Child",
+                    date: Date.now(),
+                });
+                await newNotification.save();
+            }
             res.status(201).json({
                 success: true,
                 record: entertainment.record,

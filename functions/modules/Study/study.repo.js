@@ -124,13 +124,15 @@ exports.addAssignment = async (form, childId, idx) => {
             result.study[childIndex].subjects[idx].Assignments.push(form);
             await result.save();
             let msg = childName + " Added new assignment"
-            let newNotification = new Notification({
-                text: msg,
-                type: "Child",
-                date: Date.now(),
-                userId: childId
-            })
-            await newNotification.save();
+            if (user.role == "child" || user.role == "helper") {
+                let newNotification = new Notification({
+                    text: msg,
+                    type: "Child",
+                    date: Date.now(),
+                    userId: user.parent
+                });
+                await newNotification.save();
+            }
             return {
                 success: true,
                 code: 201,

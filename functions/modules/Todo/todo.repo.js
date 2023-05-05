@@ -158,12 +158,16 @@ exports.updateTask = async (childId, form) => {
                 let childName = email.substring(0, atIndex).trim();
 
                 let msg = childName + " " + child.familyUserName + " has completed a task!";
-                let newNotification = new Notification({
-                    text: msg,
-                    type: "Child",
-                    date: Date.now()
-                })
-                await newNotification.save();
+                if (user.role == "child" || user.role == "helper") {
+
+                    let newNotification = new Notification({
+                        text: msg,
+                        type: "Child",
+                        date: Date.now(),
+                        userId: user.parent
+                    });
+                    await newNotification.save();
+                }
                 return {
                     success: true,
                     code: 201,
