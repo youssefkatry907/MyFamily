@@ -11,13 +11,11 @@ let studySchema = mongoose.Schema({
                     subject: { type: String },
                     Assignments: [
                         {
-                            Assignment: {
-                                title: { type: String },
-                                description: { type: String },
-                                dueDate: { type: Date, default: Date.now },
-                                done: { type: Boolean, default: false },
-                                image: { type: String }
-                            }
+                            title: { type: String },
+                            description: { type: String },
+                            dueDate: { type: Date, default: Date.now },
+                            done: { type: Boolean, default: false },
+                            image: { type: String }
                         }
                     ]
                 }
