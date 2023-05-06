@@ -64,30 +64,36 @@ exports.listMessages = async (req, res) => {
     }
 }
 
-exports.sendMessage = async (req, res) => {
+exports.sendMessage = async (req, msg) => {
     try {
+        const chatId = await chat.isExist({ _id: req.body.chatId });
         const receiver = await child.isExist({ _id: req.body.receiver });
-        if (receiver.success) {
-            const msg = {
-                sender: req.body.sender,
-                receiver: req.body.receiver,
-                message: req.body.message
+        if (chatId.success) {
+            if (receiver.success) {
+                const msg = {
+                    sender: req.body.sender,
+                    receiver: req.body.receiver,
+                    message: req.body.message
+                }
+                chat.record.messages.push(msg);
+                res.status(200).json({
+                    success: true,
+                    msg,
+                    code: 200,
+                });
+            } 
+            else {
+                res.status(404).json({
+                    success: false,
+                    code: 404,
+                    error: "user not found"
+                });
             }
-            await chat.create(msg);
-            return res.status(200).json({
-                success: true,
-                msg,
-                code: 200,
-            });
-        } else {
-            return res.status(404).json({
-                success: false,
-                code: 404,
-                error: "user not found"
-            });
         }
-    }
-    catch (err) {
+        else{
+            await chat.create(req.body);
+        }
+    } catch (err) {
         console.log(err.message, err.message);
         return res.status(500).json({
             success: false,
