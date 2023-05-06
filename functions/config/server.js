@@ -23,8 +23,9 @@ io.on('connection', (socket) => {
         io.emit('deleteMessage', result);
     })
 
-    socket.on('listMessages', async (receiver) => { // list
-        const messages = await chat.list({ receiver: receiver.userId });
+    socket.on('listMessages', async (chatId) => { // list
+        const chat = await chat.list({ _id: chatId });
+        const messages = chat.messages;
         io.emit('listMessages', messages); //listen , msg ==> receiver, text
         console.log(messages);
     });
