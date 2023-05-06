@@ -1,9 +1,9 @@
 let Chat = require('../Chat/chat.model')
 
 exports.isExist = async (_id) => {
-    if(!_id){
+    if (!_id) {
         return {
-           success: false,
+            success: false,
         }
     }
     const record = await Chat.findOne({ _id });
@@ -89,9 +89,9 @@ exports.create = async (form) => {
 
 exports.sendMessage = async (msg) => {
     try {
-        let chatId = {success: false};
-        if(msg.chatId){
-           chatId = await this.isExist({ _id: msg.chatId });
+        let chatId = { success: false };
+        if (msg.chatId) {
+            chatId = await this.isExist({ _id: msg.chatId });
         }
         console.log(chatId);
         if (chatId.success) {
@@ -112,6 +112,7 @@ exports.sendMessage = async (msg) => {
                 sender: msg.sender,
                 senderName: msg.senderName,
                 receiver: msg.receiver,
+                receiverName: msg.receiverName,
                 lastMessage: msg.message,
                 messages: [
                     {
@@ -122,7 +123,8 @@ exports.sendMessage = async (msg) => {
                     }
                 ],
                 lastMessageDate: msg.messageDate,
-                image: msg.image
+                senderImage: msg.senderImage,
+                receiverImage: msg.receiverImage
             }
             console.log(chat);
             let newChat = await this.create(chat);
