@@ -32,6 +32,8 @@ exports.list = async (filter) => {
     try {
         const records = await Chat.find(filter).lean();
         return {
+            success: true,
+            code:200,
             records,
         };
 
