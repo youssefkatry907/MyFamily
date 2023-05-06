@@ -1,6 +1,11 @@
 let Chat = require('../Chat/chat.model')
 
 exports.isExist = async (_id) => {
+    if(!_id){
+        return {
+           success: false,
+        }
+    }
     const record = await Chat.findOne({ _id });
     if (record) {
         return {
@@ -46,6 +51,24 @@ exports.list = async (filter) => {
     }
 }
 
+exports.find = async (filter) => {
+    try {
+        const records = await Chat.findOne(filter).lean();
+        return {
+            success: true,
+            code: 200,
+            records,
+        };
+
+    } catch (err) {
+        return {
+            success: false,
+            code: 500,
+            error: "Unexpected Error!"
+        };
+    }
+}
+
 exports.create = async (form) => {
     try {
         const newRecord = new Chat(form);
@@ -66,16 +89,20 @@ exports.create = async (form) => {
 
 exports.sendMessage = async (msg) => {
     try {
-        const chatId = await this.isExist({ _id: req.body.chatId });
+        let chatId = {success: false};
+        if(msg.chatId){
+           chatId = await this.isExist({ _id: msg.chatId });
+        }
+        console.log(chatId);
         if (chatId.success) {
             const message = {
                 sender: msg.sender,
                 message: msg.message,
-                date: msg.date
+                date: msg.messageDate
             }
-            // push message to messages array and update
-            let newMessage = await Chat.findOneAndUpdate({ _id: chatId.record._id }, { $push: { messages: message } }, { new: true });
+            let newMessage = await Chat.findOneAndUpdate({ _id: chatId.Chat._id }, { $push: { messages: message } }, { new: true });
             await newMessage.save();
+            console.log(newMessage);
             return {
                 create: false
             }
@@ -97,7 +124,9 @@ exports.sendMessage = async (msg) => {
                 lastMessageDate: msg.messageDate,
                 image: msg.image
             }
+            console.log(chat);
             let newChat = await this.create(chat);
+            console.log(newChat);
             return {
                 create: true,
                 chatId: newChat.record._id
@@ -105,11 +134,6 @@ exports.sendMessage = async (msg) => {
         }
     } catch (err) {
         console.log(err.message, err.message);
-        return res.status(500).json({
-            success: false,
-            code: 500,
-            error: "Unexpected Error!"
-        });
     }
 }
 
