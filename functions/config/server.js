@@ -14,7 +14,8 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', async (msg) => {
         await chat.create(msg);
-        io.emit('sendMessage', msg);
+        const messages = await chat.list({ receiver: msg.receiver })
+        io.emit('listMessages', messages.records);
         console.log(msg);
     });
 
