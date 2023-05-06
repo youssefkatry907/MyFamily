@@ -4,7 +4,7 @@ let chatSchema = mongoose.Schema({
     sender: { type: mongoose.Types.ObjectId, required: true },
     senderName: { type: String, required: true },
     receiver: { type: mongoose.Types.ObjectId, required: true },
-    message: [
+    messages: [
         { type: Object }
     ],
     date: { type: Date, default: Date.now },
