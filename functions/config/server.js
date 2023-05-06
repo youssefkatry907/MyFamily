@@ -16,9 +16,9 @@ io.on('connection', (socket) => {
     socket.on('sendMessage', async (msg) => {
         let check = await chatRepo.sendMessage(msg);
         let chatId = check.create ? check.chatId : msg.chatId
-        const chat = await chatRepo.list({ _id: chatId });
-        const messages = chat.messages;
-        io.emit('listMessages', messages.records);
+        const chat = await chatRepo.find({ _id: chatId });
+        const messages = chat.records.messages;
+        io.emit('listMessages', messages);
         console.log(msg);
     });
 
@@ -28,8 +28,9 @@ io.on('connection', (socket) => {
     })
 
     socket.on('listMessages', async (chatId) => { // list
-        const chat = await chatRepo.list({ _id: chatId });
-        const messages = chat.messages;
+        const chat = await chatRepo.find({ _id: chatId });
+        console.log(chat);
+        const messages = chat.records.messages;
         io.emit('listMessages', messages); //listen , msg ==> receiver, text
         console.log(messages);
     });
