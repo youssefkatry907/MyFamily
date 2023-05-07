@@ -8,6 +8,11 @@ let groupSchema = mongoose.Schema({
     groupName: { type: String, required: true },
     groupImage: { type: String },
     groupDescription: { type: String },
+    lastMessage: { type: String, required: true },
+    lastMessageDate: { type: Date, default: Date.now },
+    messages: [
+        { type: Object }
+    ],
     children: [
         {
             child: { type: mongoose.Types.ObjectId, ref: 'childrens' }
