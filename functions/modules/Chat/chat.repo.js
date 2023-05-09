@@ -103,7 +103,7 @@ exports.sendMessage = async (msg) => {
             let newMessage = await Chat.findOneAndUpdate({ _id: chatId.Chat._id }, {
                 $push: { messages: message }, $set: {
                     lastMessage: message.message,
-                    lastMessageDate: message.messageDate
+                    lastMessageDate: message.date
                 }
             }, { new: true });
             await newMessage.save();
