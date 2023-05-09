@@ -24,8 +24,8 @@ exports.createGroup = async (req, res) => {
     try {
         let form = req.body;
         let record = await group.create(form);
-        res.status(200).json({
-            success: true,
+        res.status(record.code).json({
+            success: record.success,
             group: record
         });
     } catch (error) {

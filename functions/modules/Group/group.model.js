@@ -8,7 +8,7 @@ let groupSchema = mongoose.Schema({
     groupName: { type: String, required: true },
     groupImage: { type: String },
     groupDescription: { type: String },
-    lastMessage: { type: String, required: true },
+    lastMessage: { type: String },
     lastMessageDate: { type: Date, default: Date.now },
     messages: [
         { type: Object }

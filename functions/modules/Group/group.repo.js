@@ -47,10 +47,11 @@ exports.create = async (form) => {
         await group.save();
         return {
             success: true,
-            code: 200,
+            code: 201,
             group
         };
     } catch (error) {
+        console.log(error);
         return {
             success: false,
             code: 500,
@@ -61,7 +62,7 @@ exports.create = async (form) => {
 
 exports.get = async (_id) => {
     try {
-        let record = Group.findOne({ _id });
+        let record = await Group.findOne({ _id });
         return {
             success: true,
             code: 200,
@@ -80,8 +81,8 @@ exports.get = async (_id) => {
 exports.sendMessage = async (msg) => {
     try {
 
-        let groupId = await this.isExist({ _id: msg.groupId });
-        //console.log(groupId);
+        let groupId = await this.isExist({ _id: msg.chatId });
+        console.log(groupId);
         if (groupId.success) {
             const message = {
                 sender: msg.sender,
@@ -89,9 +90,13 @@ exports.sendMessage = async (msg) => {
                 message: msg.message,
                 date: msg.messageDate
             }
-            let newMessage = await Group.findOneAndUpdate({ _id: groupId.Group._id }, { $push: { messages: message } }, { new: true });
+            let newMessage = await Group.findOneAndUpdate({ _id: groupId.Group._id }, {
+                $push: { messages: message }, $set: {
+                    lastMessage: message.message,
+                    lastMessageDate: message.messageDate
+                }
+            }, { new: true });
             await newMessage.save();
-            //console.log(newMessage);
             return {
                 success: true,
                 groupId: groupId.Group._id
@@ -102,33 +107,6 @@ exports.sendMessage = async (msg) => {
                 success: false
             }
         }
-        // else {
-        //     const chat = {
-        //         sender: msg.sender,
-        //         senderName: msg.senderName,
-        //         receiver: msg.receiver,
-        //         receiverName: msg.receiverName,
-        //         lastMessage: msg.message,
-        //         messages: [
-        //             {
-        //                 sender: msg.sender,
-        //                 receiver: msg.receiver,
-        //                 message: msg.message,
-        //                 date: msg.messageDate
-        //             }
-        //         ],
-        //         lastMessageDate: msg.messageDate,
-        //         senderImage: msg.senderImage,
-        //         receiverImage: msg.receiverImage
-        //     }
-        //     console.log(chat);
-        //     let newChat = await this.create(chat);
-        //     console.log(newChat);
-        //     return {
-        //         create: true,
-        //         groupId: newChat.record._id
-        //     }
-        // }
     } catch (err) {
         console.log(err.message, err.message);
     }
