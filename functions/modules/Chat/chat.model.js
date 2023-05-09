@@ -9,7 +9,7 @@ let chatSchema = mongoose.Schema({
         { type: Object }
     ],
     lastMessage: { type: String },
-    lastMessageDate: { type: Date, default: Date.now },
+    lastMessageDate: { type: String },
     senderImage: { type: String },
     receiverImage: { type: String }
 });

@@ -9,7 +9,7 @@ let groupSchema = mongoose.Schema({
     groupImage: { type: String },
     groupDescription: { type: String },
     lastMessage: { type: String },
-    lastMessageDate: { type: Date, default: Date.now },
+    lastMessageDate: { type: String },
     messages: [
         { type: Object }
     ],

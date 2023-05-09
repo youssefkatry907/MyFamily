@@ -93,7 +93,7 @@ exports.sendMessage = async (msg) => {
             let newMessage = await Group.findOneAndUpdate({ _id: groupId.Group._id }, {
                 $push: { messages: message }, $set: {
                     lastMessage: message.message,
-                    lastMessageDate: message.messageDate
+                    lastMessageDate: message.date
                 }
             }, { new: true });
             await newMessage.save();
