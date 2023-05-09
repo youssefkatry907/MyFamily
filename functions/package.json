@@ -20,6 +20,7 @@
     "firebase-admin": "^11.5.0",
     "firebase-functions": "^4.2.0",
     "gitignore": "^0.7.0",
+    "http-proxy": "^1.18.1",
     "joi": "^17.8.4",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.2",
