@@ -100,7 +100,12 @@ exports.sendMessage = async (msg) => {
                 message: msg.message,
                 date: msg.messageDate
             }
-            let newMessage = await Chat.findOneAndUpdate({ _id: chatId.Chat._id }, { $push: { messages: message } }, { new: true });
+            let newMessage = await Chat.findOneAndUpdate({ _id: chatId.Chat._id }, {
+                $push: { messages: message }, $set: {
+                    lastMessage: message.message,
+                    lastMessageDate: message.messageDate
+                }
+            }, { new: true });
             await newMessage.save();
             console.log(newMessage);
             return {

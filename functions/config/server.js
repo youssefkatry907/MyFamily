@@ -19,35 +19,29 @@ io.on('connection', (socket) => {
         const chat = await chatRepo.find({ _id: chatId });
         const messages = chat.records.messages;
         io.emit('listMessages', messages);
-        console.log(msg);
     });
 
-    socket.on('listMessages', async (chatId) => { // list
-        const chat = await chatRepo.find({ _id: chatId });
-        console.log(chat);
-        const messages = chat.records.messages;
+    socket.on('listMessages', async (id) => { // list
+        const chat = await chatRepo.find(id.chat ? { _id: id.chat } : {sender: id.sender});
+        const messages = chat.records ? chat.records.messages : [];
         io.emit('listMessages', messages); //listen , msg ==> receiver, text
-        console.log(messages);
     });
 
     socket.on('sendGroupMessage', async (msg) => {
         let check = await groupRepo.sendMessage(msg);
         let groupId;
         if (check.success) {
-            groupId = msg.groupId;
+            groupId = msg.chatId;
             const group = await groupRepo.get({ _id: groupId });
             const messages = group.record.messages;
             io.emit('listGroupMessages', messages);
         }
-        console.log(msg);
     });
 
     socket.on('listGroupMessages', async (groupId) => { // list
         const group = await groupRepo.get({ _id: groupId });
-        console.log(group);
         const messages = group.record.messages;
-        io.emit('listGroupMessages', messages); 
-        console.log(messages);
+        io.emit('listGroupMessages', messages);
     });
 
     socket.on('deleteMessage', async (msg) => {
