@@ -5,7 +5,7 @@ const checker = require('jsonwebtoken');
 exports.listChat = async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
-        let decodedToken = checker.verify(token, "MyFamilyTeam");
+        let decodedToken = checker.verify(token, process.env.ACCESS_TOKEN_SECRET);
         const result = await chat.list({ $or: [{ sender: decodedToken._id }, { receiver: decodedToken._id }] });
         if (result.success) {
             res.status(result.code).json({
@@ -35,7 +35,7 @@ exports.listChat = async (req, res) => {
 exports.listMessages = async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
-        let helper = checker.verify(token, "MyFamilyTeam");
+        let helper = checker.verify(token, process.env.ACCESS_TOKEN_SECRET);
         let chatId = req.query.chat;
         const chatFound = await chat.isExist(chatId);
         if (chatFound.success) {

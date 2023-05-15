@@ -27,11 +27,11 @@ exports.getTasks = async (req, res) => {
     // return all tasks and populate all children
     try {
         let token = req.headers.authorization.split(' ')[1];
-        let parent = jwt.verify(token, "MyFamilyTeam")
+        let parent = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
         let todo = await todoRepo.getAll(parent.familyUserName);
         if (todo.success) {
 
-            return res.status(200).json({toDoList: todo.toDoList});
+            return res.status(200).json({ toDoList: todo.toDoList });
         }
         else {
             return res.status(404).json({

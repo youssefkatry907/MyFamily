@@ -49,7 +49,7 @@ exports.login = async (req, res) => {
 exports.changePassword = async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
-        let decodedToken = checker.verify(token, "MyFamilyTeam");
+        let decodedToken = checker.verify(token, process.env.ACCESS_TOKEN_SECRET);
         const result = await parent.resetPassword(decodedToken._id, req.body.newPassword);
         res.status(result.code).json({ success: result.success, code: result.code });
     } catch (err) {
@@ -66,7 +66,7 @@ exports.changePassword = async (req, res) => {
 exports.updateProfile = async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
-        let decodedToken = checker.verify(token, "MyFamilyTeam");
+        let decodedToken = checker.verify(token, process.env.ACCESS_TOKEN_SECRET);
         const result = await parent.update(decodedToken._id, req.body);
         res.status(result.code).json({
             success: result.success,
@@ -100,7 +100,7 @@ exports.logout = async (req, res) => {
 exports.deleteParent = async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
-        let decodedToken = checker.verify(token, "MyFamilyTeam");
+        let decodedToken = checker.verify(token, process.env.ACCESS_TOKEN_SECRET);
         if (decodedToken) {
             await parent.remove(decodedToken._id);
             res.status(200).json({
@@ -122,7 +122,7 @@ exports.deleteParent = async (req, res) => {
 exports.addMember = async (req, res) => {
     try {
         const parentToken = req.headers.authorization.split(' ')[1];
-        let decodedToken = checker.verify(parentToken, "MyFamilyTeam");
+        let decodedToken = checker.verify(parentToken, process.env.ACCESS_TOKEN_SECRET);
         if (decodedToken) {
             const form = req.body;
             const result = await parent.add(form, decodedToken._id);
@@ -146,7 +146,7 @@ exports.addMember = async (req, res) => {
 exports.uploadImage = async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
-        let decodedToken = checker.verify(token, "MyFamilyTeam");
+        let decodedToken = checker.verify(token, process.env.ACCESS_TOKEN_SECRET);
         if (decodedToken) {
             const newImage = req.files;
             console.log(newImage);

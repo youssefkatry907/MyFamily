@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 exports.listGroups = async (req, res) => {
     try {
         let token = req.headers.authorization.split(' ')[1];
-        let parent = jwt.verify(token, "MyFamilyTeam")
+        let parent = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
         let result = await group.list(parent.familyUserName);
         res.status(200).json({
             success: true,

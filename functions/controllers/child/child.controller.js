@@ -7,7 +7,7 @@ exports.getChildren = async (req, res) => {
     // get all children of a parent using parentToken
     try {
         const parentToken = req.headers.authorization.split(' ')[1];
-        let decodedToken = checker.verify(parentToken, "MyFamilyTeam");
+        let decodedToken = checker.verify(parentToken, process.env.ACCESS_TOKEN_SECRET);
         if (decodedToken) {
             const result = await child.getAll(decodedToken._id);
             return res.status(200).json({
@@ -55,7 +55,7 @@ exports.login = async (req, res) => {
 exports.logout = async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
-        let decodedToken = checker.verify(token, "MyFamilyTeam");
+        let decodedToken = checker.verify(token, process.env.ACCESS_TOKEN_SECRET);
         const result = await child.logout(decodedToken._id);
         res.status(result.code).json(result);
     } catch (err) {
