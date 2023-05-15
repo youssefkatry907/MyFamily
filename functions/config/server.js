@@ -19,8 +19,8 @@ let io = socketIo(server, {
 
 socketHandler(io)
 
-server.listen(4000, () => {
-    console.log('listening on 8000!')
+server.listen(process.env.PORT, () => {
+    console.log("listening on the port!")
 })
 
 module.exports = server;
