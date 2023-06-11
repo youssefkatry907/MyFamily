@@ -19,7 +19,7 @@ exports.addSubject = async (req, res) => {
 exports.getStudies = async (req, res) => {
     try {
         let token = req.headers.authorization.split(' ')[1];
-        let parent = checker.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        let parent = checker.verify(token, "MyFamilyTeam");
         let result = await study.get(parent.familyUserName);
         return res.status(200).json(result);
     } catch (err) {

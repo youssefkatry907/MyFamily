@@ -4,7 +4,7 @@ let checker = require('jsonwebtoken');
 exports.list = async (req, res) => {
     try {
         let token = req.headers.authorization.split(' ')[1];
-        let child = checker.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        let child = checker.verify(token, "MyFamilyTeam");
         let result = await todo.listTasks(child._id);
         res.status(result.code).json(result);
     } catch (err) {
@@ -20,7 +20,7 @@ exports.list = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         let token = req.headers.authorization.split(' ')[1];
-        let child = checker.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        let child = checker.verify(token, "MyFamilyTeam");
         let result = await todo.updateTask(child._id, req.body);
         res.status(result.code).json(result);
     } catch (err) {
