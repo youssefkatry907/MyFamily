@@ -25,7 +25,7 @@ exports.addEvent = async (req, res) => {
 exports.listEvents = async (req, res) => {
     try {
         let token = req.headers.authorization.split(' ')[1];
-        let parent = checker.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        let parent = checker.verify(token, "MyFamilyTeam");
         const familyUserName = parent.familyUserName;
         const result = await event.list(familyUserName);
         res.status(result.code).json(result.eventsByDate);

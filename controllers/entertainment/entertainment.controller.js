@@ -6,7 +6,7 @@ const { use } = require('../../routes/entertainment/entertainment.route');
 exports.addEntertainment = async (req, res) => {
     try {
         let token = req.headers.authorization.split(' ')[1];
-        let parent = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+        let parent = jwt.verify(token, "MyFamilyTeam")
         const entertainmentTitle = req.body;
         const entertainment = await entertainmentRepo.add(entertainmentTitle, parent.familyUserName);
         if (entertainment.success) {
@@ -32,7 +32,7 @@ exports.addEntertainment = async (req, res) => {
 exports.getAllEntertainment = async (req, res) => {
     try {
         let token = req.headers.authorization.split(' ')[1];
-        let parent = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+        let parent = jwt.verify(token, "MyFamilyTeam")
         const entertainment = await entertainmentRepo.getAll(parent.familyUserName);
         if (entertainment.success) {
             return res.status(200).json({
@@ -82,7 +82,7 @@ exports.removeEntertainment = async (req, res) => {
 exports.voteSuggestion = async (req, res) => {
     try {
         let token = req.headers.authorization.split(' ')[1];
-        let user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        let user = jwt.verify(token, "MyFamilyTeam");
         const form = req.body;
         const entertainment = await entertainmentRepo.vote(form);
         if (entertainment.success) {

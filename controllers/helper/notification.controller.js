@@ -4,7 +4,7 @@ let checker = require('jsonwebtoken');
 exports.listNotifications = async (req, res) => {
     try {
         let token = req.headers.authorization.split(' ')[1];
-        let helper = checker.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        let helper = checker.verify(token, "MyFamilyTeam");
         let result = await notification.list({ userId: helper._id });
         res.status(result.code).json(result);
     } catch (err) {
