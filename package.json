@@ -1,19 +1,33 @@
 {
+  "name": "MyFamily",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "dev": "nodemon config/server.js",
+    "prod": "nodemon config/server.js",
+    "start": "nodemon config/server.js"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "config/server.js",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "dotnet": "^1.1.4",
     "express": "^4.18.2",
+    "firebase-admin": "^11.5.0",
+    "firebase-functions": "^4.4.0",
     "gitignore": "^0.7.0",
-    "joi": "^17.8.3",
+    "http-proxy": "^1.18.1",
+    "joi": "^17.8.4",
     "jsonwebtoken": "^9.0.0",
-    "lsof": "^0.1.0",
     "mongoose": "^7.0.2",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^2.0.21",
     "socket.io": "^4.6.1"
   },
-  "scripts": {
-    "build": "nodemon config/server.js",
-    "start": "nodemon config/server.js"
-  }
+  "devDependencies": {
+    "firebase-functions-test": "^3.0.0"
+  },
+  "private": true
 }
