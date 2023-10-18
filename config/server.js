@@ -19,7 +19,7 @@ let io = socketIo(server, {
 
 socketHandler(io)
 
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT || 8000, () => {
     console.log("listening on the port!")
 })
 
