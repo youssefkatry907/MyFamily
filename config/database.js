@@ -1,5 +1,4 @@
 const mongoose = require("mongoose")
-const uri = "mongodb+srv://Family:MyFamilyTeam@cluster0.kavfaaq.mongodb.net/?retryWrites=true&w=majority"
 
 const connection = async () => {
     return mongoose.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
