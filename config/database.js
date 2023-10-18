@@ -14,7 +14,7 @@ module.exports = {
     mongoose,
     connect: () => {
         mongoose.Promise = Promise;
-        mongoose.connect(uri);
+        mongoose.connect(process.env.CONNECTION_STRING);
     },
     disconnect: done => {
         mongoose.disconnect(done);
